@@ -66,10 +66,11 @@ html, body {
 }
 
 /* ═══════════════════════════════════════════════════════
-   COVER PAGE
+   COVER PAGES (front and back)
    ═══════════════════════════════════════════════════════ */
 
-.cover-page {
+.cover-page,
+.back-cover-page {
   page: cover;
   page-break-after: always;
   break-after: page;
@@ -83,8 +84,9 @@ html, body {
   print-color-adjust: exact;
 }
 
-/* Custom cover image */
-.cover-page--image {
+/* Custom cover image (front and back) */
+.cover-page--image,
+.back-cover-page--image {
   background: #111713;
 }
 
@@ -94,6 +96,26 @@ html, body {
   height: 100%;
   object-fit: cover;
   margin: 0;
+}
+
+/* HTML fallback back-cover */
+.back-cover-page--html {
+  background-color: var(--color-dark);
+  background-image:
+    radial-gradient(ellipse at 80% 80%, rgba(79, 102, 86, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 20%, rgba(99, 54, 31, 0.12) 0%, transparent 60%);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.back-cover-blurb {
+  font-family: var(--font-sans);
+  font-size: 10pt;
+  color: #8a8a7a;
+  line-height: 1.7;
+  max-width: 32em;
+  margin: 0 0 2rem;
 }
 
 /* Auto-generated HTML cover */
@@ -518,13 +540,31 @@ html, body {
   border-bottom: 2px solid var(--color-border);
 }
 
-.author-photo {
-  width: 80px;
-  height: 80px;
+.author-portrait {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
   margin: 0;
+  border: 3px solid var(--color-border);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+}
+
+.author-portrait-monogram {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-surface);
+  border: 2px solid var(--color-border);
+  font-family: var(--font-serif);
+  font-size: 22pt;
+  font-weight: 700;
+  color: var(--color-accent);
 }
 
 .about-author-title-block {
@@ -3759,7 +3799,7 @@ export function ProtectedRoute({
 
 <div class="about-author-page" id="about-author">
   <div class="about-author-header">
-    
+    <img src="file:///Users/ranveer.kumar/work/senior-frontend-system-design-handbook/book/assets/author/ranveer-kumar-author.png" alt="Ranveer Kumar" class="author-portrait" />
     <div class="about-author-title-block">
       <div class="about-author-eyebrow">About the Author</div>
       <h1 class="about-author-name">Ranveer Kumar</h1>

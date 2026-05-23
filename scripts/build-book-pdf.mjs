@@ -2,10 +2,11 @@
 /**
  * Senior Frontend System Design Handbook — Premium PDF Build Script
  *
- * Strategy: Two-pass PDF generation
- *   Pass 1 — cover.pdf   (no header/footer, zero margins, full-bleed)
- *   Pass 2 — body.pdf    (copyright → TOC → chapters → author, with page numbers)
- *   Merge   — pdf-lib merges cover + body into the final output PDF
+ * Strategy: Three-pass PDF generation
+ *   Pass 1 — cover.pdf      (front cover, no header/footer, zero margins, full-bleed)
+ *   Pass 2 — body.pdf       (copyright → TOC → chapters → author, with page numbers)
+ *   Pass 3 — back-cover.pdf (back cover, no header/footer, zero margins, full-bleed)
+ *   Merge   — pdf-lib merges cover + body + back-cover into the final output PDF
  *
  * Usage:  npm run book:pdf
  * Output: pdf/senior-frontend-system-design-handbook.pdf
@@ -86,9 +87,10 @@ for (const part of PARTS) {
 
 // ─── Paths ────────────────────────────────────────────────────────────────────
 
-const CSS_PATH         = join(BOOK_DIR, "styles", "book.css");
-const DIAGRAMS_DIR     = join(BOOK_DIR, "assets", "diagrams");
-const COVER_IMAGE_PATH = join(BOOK_DIR, "assets", "cover", "senior-frontend-system-design-cover.png");
+const CSS_PATH            = join(BOOK_DIR, "styles", "book.css");
+const DIAGRAMS_DIR        = join(BOOK_DIR, "assets", "diagrams");
+const FRONT_COVER_PATH    = join(BOOK_DIR, "assets", "cover", "senior-frontend-system-design-front-cover.png");
+const BACK_COVER_PATH     = join(BOOK_DIR, "assets", "cover", "senior-frontend-system-design-back-cover.png");
 
 // ─── Configure marked ─────────────────────────────────────────────────────────
 
@@ -183,8 +185,8 @@ function parseChapter(filePath, chapterNum) {
 // ─── Page builders ────────────────────────────────────────────────────────────
 
 function coverImageHtml() {
-  if (existsSync(COVER_IMAGE_PATH)) {
-    const coverUrl = pathToFileURL(COVER_IMAGE_PATH).href;
+  if (existsSync(FRONT_COVER_PATH)) {
+    const coverUrl = pathToFileURL(FRONT_COVER_PATH).href;
     return `
 <div class="cover-page cover-page--image">
   <img src="${coverUrl}" alt="${metadata.title}" class="cover-full-image" />
@@ -206,6 +208,34 @@ function coverImageHtml() {
       <span>Version ${metadata.version}</span>
       <span class="cover-meta-sep">·</span>
       <span>${metadata.publicationDate}</span>
+      <span class="cover-meta-sep">·</span>
+      <span>${metadata.license}</span>
+    </div>
+  </div>
+</div>`;
+}
+
+function backCoverHtml() {
+  if (existsSync(BACK_COVER_PATH)) {
+    const backCoverUrl = pathToFileURL(BACK_COVER_PATH).href;
+    return `
+<div class="back-cover-page back-cover-page--image">
+  <img src="${backCoverUrl}" alt="${metadata.title} — Back Cover" class="cover-full-image" />
+</div>`;
+  }
+
+  // HTML fallback — mirrors the front cover style
+  return `
+<div class="back-cover-page back-cover-page--html">
+  <div class="cover-inner">
+    <p class="cover-eyebrow">Beyond the Component</p>
+    <p class="back-cover-blurb">${metadata.description}</p>
+    <hr class="cover-rule" />
+    <p class="cover-author">${metadata.author}</p>
+    <p class="cover-meta">${metadata.authorUrl}</p>
+    <p class="cover-meta">${metadata.blogUrl}</p>
+    <div class="cover-footer-meta">
+      <span>Version ${metadata.version}</span>
       <span class="cover-meta-sep">·</span>
       <span>${metadata.license}</span>
     </div>
@@ -339,8 +369,8 @@ function aboutAuthorHtml(chapter) {
   ];
   const authorImagePath = authorImagePaths.find((p) => existsSync(p));
   const authorImageHtml = authorImagePath
-    ? `<img src="${pathToFileURL(authorImagePath).href}" alt="${metadata.author}" class="author-photo" />`
-    : "";
+    ? `<img src="${pathToFileURL(authorImagePath).href}" alt="${metadata.author}" class="author-portrait" />`
+    : `<div class="author-portrait-monogram">RK</div>`;
 
   // Strip the leading "## Ranveer Kumar" h2 — it's already shown in the header above
   const bodyHtml = chapter.bodyHtml.replace(/^\s*<h2>[^<]*<\/h2>\s*/, "");
@@ -429,18 +459,25 @@ async function buildPdf() {
   }
 
   // ── Generate cover HTML ─────────────────────────────────────────────────
-  const coverHtmlContent = htmlDoc(css, coverImageHtml());
-  const coverHtmlPath    = join(OUTPUT_DIR, "_cover.html");
-  const coverPdfPath     = join(OUTPUT_DIR, "_cover.pdf");
+  const coverHtmlContent     = htmlDoc(css, coverImageHtml());
+  const coverHtmlPath        = join(OUTPUT_DIR, "_cover.html");
+  const coverPdfPath         = join(OUTPUT_DIR, "_cover.pdf");
 
   writeFileSync(coverHtmlPath, coverHtmlContent, "utf-8");
 
   // ── Generate body HTML ──────────────────────────────────────────────────
-  const bodyHtmlContent  = buildBodyHtml(parsedChapters);
-  const bodyHtmlPath     = join(OUTPUT_DIR, "_body.html");
-  const bodyPdfPath      = join(OUTPUT_DIR, "_body.pdf");
+  const bodyHtmlContent      = buildBodyHtml(parsedChapters);
+  const bodyHtmlPath         = join(OUTPUT_DIR, "_body.html");
+  const bodyPdfPath          = join(OUTPUT_DIR, "_body.pdf");
 
   writeFileSync(bodyHtmlPath, bodyHtmlContent, "utf-8");
+
+  // ── Generate back cover HTML ─────────────────────────────────────────────
+  const backCoverHtmlContent = htmlDoc(css, backCoverHtml());
+  const backCoverHtmlPath    = join(OUTPUT_DIR, "_back-cover.html");
+  const backCoverPdfPath     = join(OUTPUT_DIR, "_back-cover.pdf");
+
+  writeFileSync(backCoverHtmlPath, backCoverHtmlContent, "utf-8");
 
   console.log(`\n  HTML files written.`);
 
@@ -452,16 +489,11 @@ async function buildPdf() {
     args: ["--no-sandbox", "--disable-setuid-sandbox", "--allow-file-access-from-files"],
   });
 
-  // ── Pass 1: Cover PDF (no margins, no header/footer) ───────────────────
-  console.log("  Rendering cover PDF...");
-  await renderHtmlToPdf(browser, coverHtmlPath, coverPdfPath, {
+  const fullBleedOptions = {
     margin: { top: "0", right: "0", bottom: "0", left: "0" },
     displayHeaderFooter: false,
-  });
-
-  // ── Pass 2: Body PDF (standard margins, page numbers in footer) ─────────
-  console.log("  Rendering body PDF...");
-  await renderHtmlToPdf(browser, bodyHtmlPath, bodyPdfPath, {
+  };
+  const bodyOptions = {
     margin: { top: "2cm", right: "2.2cm", bottom: "2.4cm", left: "2.2cm" },
     displayHeaderFooter: true,
     headerTemplate: "<div></div>",
@@ -471,29 +503,47 @@ async function buildPdf() {
                   padding-bottom:0.4cm;">
         <span class="pageNumber"></span>
       </div>`,
-  });
+  };
+
+  // ── Pass 1: Front cover PDF (full-bleed, no header/footer) ─────────────
+  console.log("  Rendering front cover PDF...");
+  await renderHtmlToPdf(browser, coverHtmlPath, coverPdfPath, fullBleedOptions);
+
+  // ── Pass 2: Body PDF (standard margins, page numbers in footer) ─────────
+  console.log("  Rendering body PDF...");
+  await renderHtmlToPdf(browser, bodyHtmlPath, bodyPdfPath, bodyOptions);
+
+  // ── Pass 3: Back cover PDF (full-bleed, no header/footer) ──────────────
+  console.log("  Rendering back cover PDF...");
+  await renderHtmlToPdf(browser, backCoverHtmlPath, backCoverPdfPath, fullBleedOptions);
 
   await browser.close();
 
-  // ── Merge: cover + body ─────────────────────────────────────────────────
-  console.log("  Merging cover and body PDFs...");
+  // ── Merge: front cover + body + back cover ───────────────────────────────
+  console.log("  Merging PDFs...");
 
-  const coverBytes  = readFileSync(coverPdfPath);
-  const bodyBytes   = readFileSync(bodyPdfPath);
+  const coverBytes     = readFileSync(coverPdfPath);
+  const bodyBytes      = readFileSync(bodyPdfPath);
+  const backCoverBytes = readFileSync(backCoverPdfPath);
 
-  const coverPdf = await PDFDocument.load(coverBytes);
-  const bodyPdf  = await PDFDocument.load(bodyBytes);
+  const coverPdf     = await PDFDocument.load(coverBytes);
+  const bodyPdf      = await PDFDocument.load(bodyBytes);
+  const backCoverPdf = await PDFDocument.load(backCoverBytes);
 
   const finalPdf = await PDFDocument.create();
 
-  // Copy cover pages (should be exactly 1)
+  // Front cover (page 1)
   const [coverPage] = await finalPdf.copyPages(coverPdf, [0]);
   finalPdf.addPage(coverPage);
 
-  // Copy all body pages
+  // Body pages
   const bodyPageIndices = Array.from({ length: bodyPdf.getPageCount() }, (_, i) => i);
   const bodyPages = await finalPdf.copyPages(bodyPdf, bodyPageIndices);
   for (const page of bodyPages) finalPdf.addPage(page);
+
+  // Back cover (last page)
+  const [backCoverPage] = await finalPdf.copyPages(backCoverPdf, [0]);
+  finalPdf.addPage(backCoverPage);
 
   // Set PDF metadata
   finalPdf.setTitle(metadata.title);
@@ -515,7 +565,7 @@ async function buildPdf() {
   );
 
   // ── Cleanup temp files ──────────────────────────────────────────────────
-  for (const p of [coverHtmlPath, coverPdfPath, bodyHtmlPath, bodyPdfPath]) {
+  for (const p of [coverHtmlPath, coverPdfPath, bodyHtmlPath, bodyPdfPath, backCoverHtmlPath, backCoverPdfPath]) {
     try { unlinkSync(p); } catch { /* ignore */ }
   }
 
