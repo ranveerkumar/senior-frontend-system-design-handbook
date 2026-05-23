@@ -20,7 +20,7 @@ https://blog.ranveerkumar.com/series/senior-frontend-system-design
 
 PDF version:
 
-[pdf/senior-frontend-system-design-handbook-v1.pdf](pdf/senior-frontend-system-design-handbook-v1.pdf)
+[pdf/senior-frontend-system-design-handbook-v1.1.pdf](pdf/senior-frontend-system-design-handbook-v1.1.pdf)
 
 ---
 
@@ -92,7 +92,7 @@ senior-frontend-system-design-handbook/
 │   └── build-book-pdf.mjs
 ├── package.json
 └── pdf/
-    └── senior-frontend-system-design-handbook-v1.pdf
+    └── senior-frontend-system-design-handbook-v1.1.pdf
 ```
 
 ---
@@ -114,7 +114,7 @@ npm run book:pdf
 Expected output:
 
 ```text
-pdf/senior-frontend-system-design-handbook-v1.pdf
+pdf/senior-frontend-system-design-handbook-v1.1.pdf
 ```
 
 ---

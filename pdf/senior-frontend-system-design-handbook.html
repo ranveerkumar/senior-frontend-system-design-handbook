@@ -74,12 +74,13 @@ html, body {
   page: cover;
   page-break-after: always;
   break-after: page;
-  width: 100vw;
-  min-height: 100vh;
+  /* Explicit A4 dimensions ensure image fills the page cleanly */
+  width: 210mm;
+  height: 297mm;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
+  overflow: hidden;
+  display: block;
   -webkit-print-color-adjust: exact;
   print-color-adjust: exact;
 }
@@ -92,9 +93,10 @@ html, body {
 
 .cover-full-image {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 210mm;
+  height: 297mm;
   object-fit: cover;
+  object-position: center top;
   margin: 0;
 }
 
@@ -271,78 +273,86 @@ html, body {
   color: var(--color-ink);
   border: none;
   padding: 0;
-  margin: 0 0 2.5rem;
+  margin: 0 0 2rem;
 }
 
 .toc {
   font-family: var(--font-sans);
 }
 
-.toc-item {
-  font-size: 10pt;
-  padding: 0.4rem 0;
-  color: var(--color-ink);
-  border-bottom: 1px solid var(--color-border-alt);
-}
+/* ── TOC entry: label | name | leader dots | page number ── */
 
-.toc-item--front {
-  font-style: italic;
-  color: var(--color-muted);
-  border-bottom: none;
-  margin-bottom: 1.5rem;
-}
-
-.toc-item--back {
+.toc-entry {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  margin-bottom: 0.3rem;
   font-size: 9.5pt;
+}
+
+.toc-label {
+  flex-shrink: 0;
+  width: 7em;
+  font-size: 8pt;
+  font-weight: 600;
   color: var(--color-muted);
-  border-bottom: none;
-  padding: 0.35rem 0;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
-.toc-divider {
-  height: 1px;
-  background: var(--color-border);
-  margin: 1.5rem 0;
+/* For back-matter entries (Closing Note, About the Author) — no chapter label */
+.toc-entry .toc-label:empty {
+  width: 0;
 }
 
-.toc-part {
-  margin-bottom: 1.25rem;
+.toc-name {
+  flex-shrink: 0;
+  color: var(--color-ink);
+  font-weight: 500;
+  white-space: nowrap;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.toc-part-label {
+.toc-leader {
+  flex: 1;
+  min-width: 1.5rem;
+  border-bottom: 1px dotted rgba(90, 90, 90, 0.3);
+  margin: 0 0.4rem 0.2rem;
+  align-self: flex-end;
+}
+
+.toc-pagenum {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-sans);
+  font-size: 9pt;
+  color: var(--color-muted);
+  min-width: 2em;
+  text-align: right;
+}
+
+/* Part heading in TOC */
+.toc-part-block {
+  margin: 1.25rem 0 0.5rem;
+}
+
+.toc-part-heading {
   font-size: 8pt;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-accent);
-  padding: 0.75rem 0 0.4rem;
+  padding: 0.65rem 0 0.5rem;
   border-top: 2px solid var(--color-border);
+  margin-bottom: 0.2rem;
 }
 
-.toc-chapter {
-  font-size: 10pt;
-  color: var(--color-ink);
-  padding: 0.3rem 0 0.3rem 1rem;
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-  border-bottom: 1px solid var(--color-border-alt);
-}
-
-.toc-chapter-num {
-  font-size: 8pt;
-  font-weight: 600;
-  color: var(--color-muted);
-  min-width: 5.5em;
-  flex-shrink: 0;
-}
-
-.toc-chapter-dot {
-  color: var(--color-border);
-}
-
-.toc-chapter-name {
-  font-weight: 500;
+.toc-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 1.25rem 0;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -910,20 +920,16 @@ a {
   <div class="copyright-content">
     <p class="copyright-book-title">Senior Frontend System Design Handbook</p>
     <p class="copyright-subtitle">Beyond the Component</p>
-
     <p>Copyright &copy; 2026 Ranveer Kumar</p>
     <p>All rights reserved.</p>
-
     <p>This work is licensed under the
        <strong>Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</strong>
        (CC&nbsp;BY-NC-ND&nbsp;4.0) License.</p>
     <p>You are free to share this work with attribution for non-commercial purposes.
        You may not distribute modified versions or use it for commercial purposes
        without prior written permission.</p>
-
     <p>Published: 2026-05-23</p>
     <p>Version: 1.0</p>
-
     <p>Author: <a href="https://ranveerkumar.com">https://ranveerkumar.com</a></p>
     <p>Blog: <a href="https://blog.ranveerkumar.com">https://blog.ranveerkumar.com</a></p>
     <p>Source series: <a href="https://blog.ranveerkumar.com/series/senior-frontend-system-design">https://blog.ranveerkumar.com/series/senior-frontend-system-design</a></p>
@@ -933,77 +939,106 @@ a {
 <div class="toc-page">
   <h1 class="toc-heading">Contents</h1>
   <nav class="toc">
-    <div class="toc-item toc-item--front">Preface</div>
     
-      <div class="toc-part">
-        <div class="toc-part-label">Part I &mdash; The Senior Frontend Mental Model</div>
-        <div class="toc-chapter">
-          <span class="toc-chapter-num">Chapter 1</span>
-          <span class="toc-chapter-dot">&middot;</span>
-          <span class="toc-chapter-name">Beyond the Component</span>
-        </div>
-      </div>
-      <div class="toc-part">
-        <div class="toc-part-label">Part II &mdash; Data, State, and Dynamic UI</div>
-        <div class="toc-chapter">
-          <span class="toc-chapter-num">Chapter 2</span>
-          <span class="toc-chapter-dot">&middot;</span>
-          <span class="toc-chapter-name">Real-Time Frontend Systems</span>
-        </div>
-        <div class="toc-chapter">
-          <span class="toc-chapter-num">Chapter 3</span>
-          <span class="toc-chapter-dot">&middot;</span>
-          <span class="toc-chapter-name">High-Density Data Management</span>
-        </div>
-        <div class="toc-chapter">
-          <span class="toc-chapter-num">Chapter 4</span>
-          <span class="toc-chapter-dot">&middot;</span>
-          <span class="toc-chapter-name">Dynamic and Scalable UI</span>
-        </div>
-        <div class="toc-chapter">
-          <span class="toc-chapter-num">Chapter 5</span>
-          <span class="toc-chapter-dot">&middot;</span>
-          <span class="toc-chapter-name">Frontend State Architecture</span>
-        </div>
-      </div>
-      <div class="toc-part">
-        <div class="toc-part-label">Part III &mdash; Performance, Platform, and Reliability</div>
-        <div class="toc-chapter">
-          <span class="toc-chapter-num">Chapter 6</span>
-          <span class="toc-chapter-dot">&middot;</span>
-          <span class="toc-chapter-name">Frontend Performance Architecture</span>
-        </div>
-        <div class="toc-chapter">
-          <span class="toc-chapter-num">Chapter 7</span>
-          <span class="toc-chapter-dot">&middot;</span>
-          <span class="toc-chapter-name">Designing Frontend Platforms</span>
-        </div>
-        <div class="toc-chapter">
-          <span class="toc-chapter-num">Chapter 8</span>
-          <span class="toc-chapter-dot">&middot;</span>
-          <span class="toc-chapter-name">Failure Handling in Frontend Systems</span>
-        </div>
-      </div>
-      <div class="toc-part">
-        <div class="toc-part-label">Part IV &mdash; Security and Interviews</div>
-        <div class="toc-chapter">
-          <span class="toc-chapter-num">Chapter 9</span>
-          <span class="toc-chapter-dot">&middot;</span>
-          <span class="toc-chapter-name">Frontend Security Architecture</span>
-        </div>
-        <div class="toc-chapter">
-          <span class="toc-chapter-num">Chapter 10</span>
-          <span class="toc-chapter-dot">&middot;</span>
-          <span class="toc-chapter-name">Senior Frontend System Design Interviews</span>
-        </div>
-      </div>
+  <div class="toc-entry">
+    <span class="toc-label">Preface</span>
+    <span class="toc-name">Preface</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">3</span>
+  </div>
+    
+  <div class="toc-part-block">
+    <div class="toc-part-heading">Part I &mdash; The Senior Frontend Mental Model</div>
+  <div class="toc-entry">
+    <span class="toc-label">Chapter&nbsp;1</span>
+    <span class="toc-name">Beyond the Component</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">5</span>
+  </div>
+  </div>
+  <div class="toc-part-block">
+    <div class="toc-part-heading">Part II &mdash; Data, State, and Dynamic UI</div>
+  <div class="toc-entry">
+    <span class="toc-label">Chapter&nbsp;2</span>
+    <span class="toc-name">Real-Time Frontend Systems</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">13</span>
+  </div>
+  <div class="toc-entry">
+    <span class="toc-label">Chapter&nbsp;3</span>
+    <span class="toc-name">High-Density Data Management</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">23</span>
+  </div>
+  <div class="toc-entry">
+    <span class="toc-label">Chapter&nbsp;4</span>
+    <span class="toc-name">Dynamic and Scalable UI</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">31</span>
+  </div>
+  <div class="toc-entry">
+    <span class="toc-label">Chapter&nbsp;5</span>
+    <span class="toc-name">Frontend State Architecture</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">39</span>
+  </div>
+  </div>
+  <div class="toc-part-block">
+    <div class="toc-part-heading">Part III &mdash; Performance, Platform, and Reliability</div>
+  <div class="toc-entry">
+    <span class="toc-label">Chapter&nbsp;6</span>
+    <span class="toc-name">Frontend Performance Architecture</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">48</span>
+  </div>
+  <div class="toc-entry">
+    <span class="toc-label">Chapter&nbsp;7</span>
+    <span class="toc-name">Designing Frontend Platforms</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">56</span>
+  </div>
+  <div class="toc-entry">
+    <span class="toc-label">Chapter&nbsp;8</span>
+    <span class="toc-name">Failure Handling in Frontend Systems</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">63</span>
+  </div>
+  </div>
+  <div class="toc-part-block">
+    <div class="toc-part-heading">Part IV &mdash; Security and Interviews</div>
+  <div class="toc-entry">
+    <span class="toc-label">Chapter&nbsp;9</span>
+    <span class="toc-name">Frontend Security Architecture</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">74</span>
+  </div>
+  <div class="toc-entry">
+    <span class="toc-label">Chapter&nbsp;10</span>
+    <span class="toc-name">Senior Frontend System Design Interviews</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">83</span>
+  </div>
+  </div>
     <div class="toc-divider"></div>
-    <div class="toc-item toc-item--back">Closing Note</div>
-    <div class="toc-item toc-item--back">About the Author</div>
+    
+  <div class="toc-entry">
+    <span class="toc-label"></span>
+    <span class="toc-name">Closing Note</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">91</span>
+  </div>
+    
+  <div class="toc-entry">
+    <span class="toc-label"></span>
+    <span class="toc-name">About the Author</span>
+    <span class="toc-leader"></span>
+    <span class="toc-pagenum">93</span>
+  </div>
   </nav>
 </div>
 
-<div class="front-matter-page chapter-content" id="preface">
+<div class="front-matter-page chapter-content" id="preface"
+     data-toc-id="preface" data-toc-title="Preface">
   <h1 class="front-matter-heading">Preface</h1>
   <h2>Why This Handbook Exists</h2>
 <p>Frontend engineering has changed. Senior roles no longer reward engineers who write clean components and know every React API. They reward engineers who can design systems: systems with clear data contracts, thoughtful state boundaries, resilient failure models, secure defaults, and measurable performance across real devices.</p>
@@ -1047,7 +1082,8 @@ a {
 
 </div>
 
-<div class="part-divider-page" id="part-I">
+<div class="part-divider-page" id="part-I"
+     data-toc-id="part-I" data-toc-title="Part I — The Senior Frontend Mental Model">
   <div class="part-divider-content">
     <div class="part-divider-eyebrow">Part I</div>
     <div class="part-divider-title">The Senior Frontend Mental Model</div>
@@ -1059,7 +1095,8 @@ a {
   </div>
 </div>
 
-<div class="chapter-title-page" id="chapter-1-title">
+<div class="chapter-title-page" id="chapter-1-title"
+     data-toc-id="chapter-1" data-toc-title="Chapter 1 — Beyond the Component">
   <div class="chapter-title-content">
     <div class="chapter-title-eyebrow">Chapter 1</div>
     <div class="chapter-title-rule"></div>
@@ -1261,7 +1298,8 @@ export type FrontendArchitectureDecision = {
 
 </div>
 
-<div class="part-divider-page" id="part-II">
+<div class="part-divider-page" id="part-II"
+     data-toc-id="part-II" data-toc-title="Part II — Data, State, and Dynamic UI">
   <div class="part-divider-content">
     <div class="part-divider-eyebrow">Part II</div>
     <div class="part-divider-title">Data, State, and Dynamic UI</div>
@@ -1276,7 +1314,8 @@ export type FrontendArchitectureDecision = {
   </div>
 </div>
 
-<div class="chapter-title-page" id="chapter-2-title">
+<div class="chapter-title-page" id="chapter-2-title"
+     data-toc-id="chapter-2" data-toc-title="Chapter 2 — Real-Time Frontend Systems">
   <div class="chapter-title-content">
     <div class="chapter-title-eyebrow">Chapter 2</div>
     <div class="chapter-title-rule"></div>
@@ -1589,7 +1628,8 @@ export function reconcileServerEvent(
 
 </div>
 
-<div class="chapter-title-page" id="chapter-3-title">
+<div class="chapter-title-page" id="chapter-3-title"
+     data-toc-id="chapter-3" data-toc-title="Chapter 3 — High-Density Data Management">
   <div class="chapter-title-content">
     <div class="chapter-title-eyebrow">Chapter 3</div>
     <div class="chapter-title-rule"></div>
@@ -1823,7 +1863,8 @@ function renderVirtualRows&lt;Item&gt;(
 
 </div>
 
-<div class="chapter-title-page" id="chapter-4-title">
+<div class="chapter-title-page" id="chapter-4-title"
+     data-toc-id="chapter-4" data-toc-title="Chapter 4 — Dynamic and Scalable UI">
   <div class="chapter-title-content">
     <div class="chapter-title-eyebrow">Chapter 4</div>
     <div class="chapter-title-rule"></div>
@@ -2122,7 +2163,8 @@ export async function validateScreen(
 
 </div>
 
-<div class="chapter-title-page" id="chapter-5-title">
+<div class="chapter-title-page" id="chapter-5-title"
+     data-toc-id="chapter-5" data-toc-title="Chapter 5 — Frontend State Architecture">
   <div class="chapter-title-content">
     <div class="chapter-title-eyebrow">Chapter 5</div>
     <div class="chapter-title-rule"></div>
@@ -2384,7 +2426,8 @@ export function transitionApproval(
 
 </div>
 
-<div class="part-divider-page" id="part-III">
+<div class="part-divider-page" id="part-III"
+     data-toc-id="part-III" data-toc-title="Part III — Performance, Platform, and Reliability">
   <div class="part-divider-content">
     <div class="part-divider-eyebrow">Part III</div>
     <div class="part-divider-title">Performance, Platform, and Reliability</div>
@@ -2398,7 +2441,8 @@ export function transitionApproval(
   </div>
 </div>
 
-<div class="chapter-title-page" id="chapter-6-title">
+<div class="chapter-title-page" id="chapter-6-title"
+     data-toc-id="chapter-6" data-toc-title="Chapter 6 — Frontend Performance Architecture">
   <div class="chapter-title-content">
     <div class="chapter-title-eyebrow">Chapter 6</div>
     <div class="chapter-title-rule"></div>
@@ -2653,7 +2697,8 @@ export function reportWebVitals(metric: WebVitalMetric) {
 
 </div>
 
-<div class="chapter-title-page" id="chapter-7-title">
+<div class="chapter-title-page" id="chapter-7-title"
+     data-toc-id="chapter-7" data-toc-title="Chapter 7 — Designing Frontend Platforms">
   <div class="chapter-title-content">
     <div class="chapter-title-eyebrow">Chapter 7</div>
     <div class="chapter-title-rule"></div>
@@ -2901,7 +2946,8 @@ export function reportWebVitals(metric: WebVitalMetric) {
 
 </div>
 
-<div class="chapter-title-page" id="chapter-8-title">
+<div class="chapter-title-page" id="chapter-8-title"
+     data-toc-id="chapter-8" data-toc-title="Chapter 8 — Failure Handling in Frontend Systems">
   <div class="chapter-title-content">
     <div class="chapter-title-eyebrow">Chapter 8</div>
     <div class="chapter-title-rule"></div>
@@ -3221,7 +3267,8 @@ export async function runWithRetry&lt;T&gt;(
 
 </div>
 
-<div class="part-divider-page" id="part-IV">
+<div class="part-divider-page" id="part-IV"
+     data-toc-id="part-IV" data-toc-title="Part IV — Security and Interviews">
   <div class="part-divider-content">
     <div class="part-divider-eyebrow">Part IV</div>
     <div class="part-divider-title">Security and Interviews</div>
@@ -3234,7 +3281,8 @@ export async function runWithRetry&lt;T&gt;(
   </div>
 </div>
 
-<div class="chapter-title-page" id="chapter-9-title">
+<div class="chapter-title-page" id="chapter-9-title"
+     data-toc-id="chapter-9" data-toc-title="Chapter 9 — Frontend Security Architecture">
   <div class="chapter-title-content">
     <div class="chapter-title-eyebrow">Chapter 9</div>
     <div class="chapter-title-rule"></div>
@@ -3482,7 +3530,8 @@ export function ProtectedRoute({
 
 </div>
 
-<div class="chapter-title-page" id="chapter-10-title">
+<div class="chapter-title-page" id="chapter-10-title"
+     data-toc-id="chapter-10" data-toc-title="Chapter 10 — Senior Frontend System Design Interviews">
   <div class="chapter-title-content">
     <div class="chapter-title-eyebrow">Chapter 10</div>
     <div class="chapter-title-rule"></div>
@@ -3760,7 +3809,8 @@ export function ProtectedRoute({
 
 </div>
 
-<div class="chapter-content closing-note-page" id="closing-note">
+<div class="chapter-content closing-note-page" id="closing-note"
+     data-toc-id="closing-note" data-toc-title="Closing Note">
   <h1 class="front-matter-heading">Closing Note</h1>
   <p>Ten chapters ago, the framing was simple: the most common mistake senior frontend engineers make is thinking their job is to write good components.</p>
 <p>Good components are necessary. They are not sufficient.</p>
@@ -3797,7 +3847,8 @@ export function ProtectedRoute({
 
 </div>
 
-<div class="about-author-page" id="about-author">
+<div class="about-author-page" id="about-author"
+     data-toc-id="about-author" data-toc-title="About the Author">
   <div class="about-author-header">
     <img src="file:///Users/ranveer.kumar/work/senior-frontend-system-design-handbook/book/assets/author/ranveer-kumar-author.png" alt="Ranveer Kumar" class="author-portrait" />
     <div class="about-author-title-block">
