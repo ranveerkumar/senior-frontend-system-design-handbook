@@ -1,0 +1,38 @@
+{
+  "name": "senior-frontend-system-design-handbook",
+  "version": "1.0.0",
+  "private": false,
+  "description": "A practical field guide for senior frontend engineers, UI architects, and engineering leaders moving beyond component-level implementation into scalable frontend architecture.",
+  "type": "module",
+  "scripts": {
+    "book:pdf": "node scripts/build-book-pdf.mjs"
+  },
+  "keywords": [
+    "frontend",
+    "frontend-architecture",
+    "system-design",
+    "senior-frontend-engineer",
+    "ui-architecture",
+    "react",
+    "nextjs",
+    "design-systems",
+    "engineering-leadership"
+  ],
+  "author": {
+    "name": "Ranveer Kumar",
+    "url": "https://ranveerkumar.com"
+  },
+  "homepage": "https://blog.ranveerkumar.com/series/senior-frontend-system-design",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ranveerkumar/senior-frontend-system-design-handbook.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ranveerkumar/senior-frontend-system-design-handbook/issues"
+  },
+  "license": "CC-BY-NC-ND-4.0",
+  "devDependencies": {
+    "marked": "^16.0.0",
+    "puppeteer": "^24.0.0"
+  }
+}
