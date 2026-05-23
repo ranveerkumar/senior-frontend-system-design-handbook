@@ -1,0 +1,32 @@
+<svg width="100%" role="img" aria-labelledby="security-diagram-4-title security-diagram-4-desc" viewBox="0 0 940 320" xmlns="http://www.w3.org/2000/svg">
+  <title id="security-diagram-4-title">CSP and third-party script governance architecture</title>
+  <desc id="security-diagram-4-desc">A third-party request goes through owner review, data review, CSP allowlist, loading strategy, monitoring, and removal review.</desc>
+  <rect x="28" y="50" width="884" height="220" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <g font-size="13" font-weight="700" fill="#111211">
+    <rect x="58" y="128" width="108" height="56" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="112" y="151" text-anchor="middle">script</text>
+    <text x="112" y="171" text-anchor="middle">request</text>
+    <path d="M170 156 H220" stroke="#4f6656" stroke-width="3" marker-end="url(#security-arrow4)" />
+    <rect x="230" y="128" width="108" height="56" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="284" y="151" text-anchor="middle">owner</text>
+    <text x="284" y="171" text-anchor="middle">purpose</text>
+    <path d="M342 156 H392" stroke="#4f6656" stroke-width="3" marker-end="url(#security-arrow4)" />
+    <rect x="402" y="128" width="108" height="56" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="456" y="151" text-anchor="middle">data</text>
+    <text x="456" y="171" text-anchor="middle">review</text>
+    <path d="M514 156 H564" stroke="#4f6656" stroke-width="3" marker-end="url(#security-arrow4)" />
+    <rect x="574" y="120" width="122" height="72" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="635" y="145" text-anchor="middle">CSP +</text>
+    <text x="635" y="165" text-anchor="middle">loading</text>
+    <text x="635" y="185" text-anchor="middle">strategy</text>
+    <path d="M700 156 H750" stroke="#4f6656" stroke-width="3" marker-end="url(#security-arrow4)" />
+    <rect x="760" y="128" width="108" height="56" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="814" y="151" text-anchor="middle">monitor</text>
+    <text x="814" y="171" text-anchor="middle">remove</text>
+  </g>
+  <defs>
+    <marker id="security-arrow4" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f6656" />
+    </marker>
+  </defs>
+</svg>

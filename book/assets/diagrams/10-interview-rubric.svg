@@ -1,0 +1,20 @@
+<svg width="100%" role="img" aria-labelledby="interview-diagram-4-title interview-diagram-4-desc" viewBox="0 0 940 360" xmlns="http://www.w3.org/2000/svg">
+  <title id="interview-diagram-4-title">Interview evaluation rubric</title>
+  <desc id="interview-diagram-4-desc">A rubric shows requirement clarity, architecture structure, trade-offs, failure handling, observability, and communication as evaluation dimensions.</desc>
+  <rect x="40" y="48" width="860" height="260" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <g font-size="13.5" font-weight="700" fill="#111211">
+    <rect x="86" y="92" width="210" height="54" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="191" y="125" text-anchor="middle">requirement clarity</text>
+    <rect x="365" y="92" width="210" height="54" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="470" y="125" text-anchor="middle">architecture structure</text>
+    <rect x="644" y="92" width="210" height="54" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="749" y="125" text-anchor="middle">trade-off judgment</text>
+    <rect x="86" y="202" width="210" height="54" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="191" y="235" text-anchor="middle">failure handling</text>
+    <rect x="365" y="202" width="210" height="54" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="470" y="235" text-anchor="middle">observability and risk</text>
+    <rect x="644" y="202" width="210" height="54" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="749" y="235" text-anchor="middle">communication clarity</text>
+  </g>
+  <text x="470" y="286" text-anchor="middle" font-size="15" font-weight="700" fill="#63361f">The strongest answers make uncertainty explicit and manageable.</text>
+</svg>

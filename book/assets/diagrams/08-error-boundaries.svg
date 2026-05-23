@@ -1,0 +1,15 @@
+<svg width="100%" role="img" aria-labelledby="failure-diagram-2-title failure-diagram-2-desc" viewBox="0 0 940 380" xmlns="http://www.w3.org/2000/svg">
+  <title id="failure-diagram-2-title">Error boundary placement map</title>
+  <desc id="failure-diagram-2-desc">Nested boundaries show app shell, route, section, and optional widget containment.</desc>
+  <rect x="70" y="54" width="800" height="280" rx="14" fill="#fffdf8" stroke="#8a4f2a" stroke-width="3" />
+  <text x="470" y="86" text-anchor="middle" font-size="18" font-weight="700" fill="#111211">App shell boundary</text>
+  <rect x="118" y="108" width="704" height="188" rx="12" fill="#f7f1e8" stroke="#4f6656" stroke-width="3" />
+  <text x="470" y="138" text-anchor="middle" font-size="17" font-weight="700" fill="#111211">Route boundary</text>
+  <rect x="154" y="164" width="300" height="94" rx="10" fill="#edf1ec" stroke="#4f6656" />
+  <text x="304" y="194" text-anchor="middle" font-size="15" font-weight="700" fill="#111211">Critical section</text>
+  <text x="304" y="218" text-anchor="middle" font-size="13" fill="#111211">retry or blocking fallback</text>
+  <rect x="486" y="164" width="300" height="94" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+  <text x="636" y="194" text-anchor="middle" font-size="15" font-weight="700" fill="#111211">Optional widget</text>
+  <text x="636" y="218" text-anchor="middle" font-size="13" fill="#111211">degrade or hide safely</text>
+  <text x="470" y="318" text-anchor="middle" font-size="15" font-weight="700" fill="#63361f">Boundary placement follows user impact, not component folder structure.</text>
+</svg>

@@ -1,0 +1,32 @@
+<svg width="100%" role="img" aria-labelledby="interview-diagram-1-title interview-diagram-1-desc" viewBox="0 0 940 300" xmlns="http://www.w3.org/2000/svg">
+  <title id="interview-diagram-1-title">Senior frontend system design answer flow</title>
+  <desc id="interview-diagram-1-desc">A flow from requirements to constraints, architecture, trade-offs, failure handling, and next steps.</desc>
+  <rect x="28" y="50" width="884" height="204" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <g font-size="13.5" font-weight="700" fill="#111211">
+    <rect x="56" y="124" width="112" height="58" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="112" y="148" text-anchor="middle">clarify</text>
+    <text x="112" y="168" text-anchor="middle">goal</text>
+    <path d="M172 153 H226" stroke="#4f6656" stroke-width="3" marker-end="url(#interview-arrow1)" />
+    <rect x="236" y="124" width="112" height="58" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="292" y="148" text-anchor="middle">constraints</text>
+    <text x="292" y="168" text-anchor="middle">and scale</text>
+    <path d="M352 153 H406" stroke="#4f6656" stroke-width="3" marker-end="url(#interview-arrow1)" />
+    <rect x="416" y="124" width="112" height="58" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="472" y="148" text-anchor="middle">architecture</text>
+    <text x="472" y="168" text-anchor="middle">proposal</text>
+    <path d="M532 153 H586" stroke="#4f6656" stroke-width="3" marker-end="url(#interview-arrow1)" />
+    <rect x="596" y="124" width="112" height="58" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="652" y="148" text-anchor="middle">trade-offs</text>
+    <text x="652" y="168" text-anchor="middle">and risks</text>
+    <path d="M712 153 H766" stroke="#4f6656" stroke-width="3" marker-end="url(#interview-arrow1)" />
+    <rect x="776" y="124" width="108" height="58" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="830" y="148" text-anchor="middle">next</text>
+    <text x="830" y="168" text-anchor="middle">steps</text>
+  </g>
+  <text x="470" y="224" text-anchor="middle" font-size="15" font-weight="700" fill="#63361f">The structure matters because it keeps ambiguity from becoming rambling.</text>
+  <defs>
+    <marker id="interview-arrow1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f6656" />
+    </marker>
+  </defs>
+</svg>

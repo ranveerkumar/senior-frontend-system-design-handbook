@@ -1,0 +1,29 @@
+<svg width="100%" role="img" aria-labelledby="platform-diagram-1-title platform-diagram-1-desc" viewBox="0 0 940 360" xmlns="http://www.w3.org/2000/svg">
+  <title id="platform-diagram-1-title">Design system operating model</title>
+  <desc id="platform-diagram-1-desc">Design feeds tokens, tokens feed components, components feed documentation, governance controls change, and adoption metrics feed back into design.</desc>
+  <rect x="40" y="44" width="860" height="260" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <g font-size="14" font-weight="700" fill="#111211">
+    <rect x="96" y="136" width="118" height="58" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="155" y="171" text-anchor="middle">design</text>
+    <path d="M218 165 H282" stroke="#4f6656" stroke-width="3" marker-end="url(#platform-arrow1)" />
+    <rect x="292" y="136" width="118" height="58" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="351" y="171" text-anchor="middle">tokens</text>
+    <path d="M414 165 H478" stroke="#4f6656" stroke-width="3" marker-end="url(#platform-arrow1)" />
+    <rect x="488" y="136" width="128" height="58" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="552" y="171" text-anchor="middle">components</text>
+    <path d="M620 165 H684" stroke="#4f6656" stroke-width="3" marker-end="url(#platform-arrow1)" />
+    <rect x="694" y="136" width="118" height="58" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="753" y="171" text-anchor="middle">docs</text>
+    <rect x="356" y="62" width="220" height="44" rx="10" fill="#f7f1e8" stroke="#8a4f2a" />
+    <text x="466" y="90" text-anchor="middle">governance and review</text>
+    <path d="M466 108 V130" stroke="#63361f" stroke-width="3" marker-end="url(#platform-arrow1)" />
+    <rect x="356" y="224" width="220" height="44" rx="10" fill="#111713" />
+    <text x="466" y="252" text-anchor="middle" fill="#fffdf8">adoption and velocity metrics</text>
+    <path d="M466 222 V199" stroke="#63361f" stroke-width="3" marker-end="url(#platform-arrow1)" />
+  </g>
+  <defs>
+    <marker id="platform-arrow1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f6656" />
+    </marker>
+  </defs>
+</svg>

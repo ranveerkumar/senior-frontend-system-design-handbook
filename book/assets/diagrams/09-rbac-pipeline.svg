@@ -1,0 +1,29 @@
+<svg width="100%" role="img" aria-labelledby="security-diagram-2-title security-diagram-2-desc" viewBox="0 0 940 300" xmlns="http://www.w3.org/2000/svg">
+  <title id="security-diagram-2-title">RBAC rendering pipeline</title>
+  <desc id="security-diagram-2-desc">User flows to claims, claims to policy, policy to route, data, and action permissions, permissions to UI affordances.</desc>
+  <rect x="28" y="48" width="884" height="204" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <g font-size="13.5" font-weight="700" fill="#111211">
+    <rect x="58" y="122" width="96" height="56" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="106" y="155" text-anchor="middle">user</text>
+    <path d="M158 150 H214" stroke="#4f6656" stroke-width="3" marker-end="url(#security-arrow2)" />
+    <rect x="224" y="122" width="108" height="56" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="278" y="155" text-anchor="middle">claims</text>
+    <path d="M336 150 H392" stroke="#4f6656" stroke-width="3" marker-end="url(#security-arrow2)" />
+    <rect x="402" y="122" width="108" height="56" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="456" y="155" text-anchor="middle">policy</text>
+    <path d="M514 150 H570" stroke="#4f6656" stroke-width="3" marker-end="url(#security-arrow2)" />
+    <rect x="580" y="102" width="132" height="96" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="646" y="132" text-anchor="middle">route</text>
+    <text x="646" y="153" text-anchor="middle">data</text>
+    <text x="646" y="174" text-anchor="middle">action</text>
+    <path d="M716 150 H772" stroke="#4f6656" stroke-width="3" marker-end="url(#security-arrow2)" />
+    <rect x="782" y="122" width="90" height="56" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="827" y="155" text-anchor="middle">UI</text>
+  </g>
+  <text x="470" y="226" text-anchor="middle" font-size="15" font-weight="700" fill="#63361f">UI permissions improve experience. Backend policy enforces security.</text>
+  <defs>
+    <marker id="security-arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f6656" />
+    </marker>
+  </defs>
+</svg>

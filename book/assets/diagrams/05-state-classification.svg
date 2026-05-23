@@ -1,0 +1,50 @@
+<svg width="100%" role="img" aria-labelledby="state-diagram-1-title state-diagram-1-desc" viewBox="0 0 960 420" xmlns="http://www.w3.org/2000/svg">
+  <title id="state-diagram-1-title">State classification matrix</title>
+  <desc id="state-diagram-1-desc">A matrix classifies local, server, URL, global, form, workflow, and derived state by owner, lifetime, persistence, shareability, and sync need.</desc>
+  <rect x="28" y="42" width="904" height="322" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <g font-size="12.5" font-weight="700" fill="#111211">
+    <text x="120" y="82" text-anchor="middle">Type</text>
+    <text x="250" y="82" text-anchor="middle">Owner</text>
+    <text x="390" y="82" text-anchor="middle">Lifetime</text>
+    <text x="535" y="82" text-anchor="middle">Persistence</text>
+    <text x="700" y="82" text-anchor="middle">Shareable</text>
+    <text x="850" y="82" text-anchor="middle">Sync need</text>
+    <line x1="64" y1="98" x2="900" y2="98" stroke="#ddd3c4" />
+    <text x="120" y="126" text-anchor="middle">local UI</text>
+    <text x="250" y="126" text-anchor="middle">component</text>
+    <text x="390" y="126" text-anchor="middle">short</text>
+    <text x="535" y="126" text-anchor="middle">memory</text>
+    <text x="700" y="126" text-anchor="middle">no</text>
+    <text x="850" y="126" text-anchor="middle">none</text>
+    <text x="120" y="168" text-anchor="middle">server</text>
+    <text x="250" y="168" text-anchor="middle">backend</text>
+    <text x="390" y="168" text-anchor="middle">canonical</text>
+    <text x="535" y="168" text-anchor="middle">cache/server</text>
+    <text x="700" y="168" text-anchor="middle">by contract</text>
+    <text x="850" y="168" text-anchor="middle">invalidate</text>
+    <text x="120" y="210" text-anchor="middle">URL</text>
+    <text x="250" y="210" text-anchor="middle">route</text>
+    <text x="390" y="210" text-anchor="middle">navigation</text>
+    <text x="535" y="210" text-anchor="middle">address bar</text>
+    <text x="700" y="210" text-anchor="middle">yes</text>
+    <text x="850" y="210" text-anchor="middle">parse</text>
+    <text x="120" y="252" text-anchor="middle">global</text>
+    <text x="250" y="252" text-anchor="middle">app shell</text>
+    <text x="390" y="252" text-anchor="middle">session</text>
+    <text x="535" y="252" text-anchor="middle">memory/storage</text>
+    <text x="700" y="252" text-anchor="middle">cross-route</text>
+    <text x="850" y="252" text-anchor="middle">explicit</text>
+    <text x="120" y="294" text-anchor="middle">workflow</text>
+    <text x="250" y="294" text-anchor="middle">process</text>
+    <text x="390" y="294" text-anchor="middle">step based</text>
+    <text x="535" y="294" text-anchor="middle">server + UI</text>
+    <text x="700" y="294" text-anchor="middle">role based</text>
+    <text x="850" y="294" text-anchor="middle">transition</text>
+    <text x="120" y="336" text-anchor="middle">derived</text>
+    <text x="250" y="336" text-anchor="middle">source data</text>
+    <text x="390" y="336" text-anchor="middle">computed</text>
+    <text x="535" y="336" text-anchor="middle">avoid storing</text>
+    <text x="700" y="336" text-anchor="middle">depends</text>
+    <text x="850" y="336" text-anchor="middle">recompute</text>
+  </g>
+</svg>

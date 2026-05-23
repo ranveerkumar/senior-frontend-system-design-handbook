@@ -1,0 +1,218 @@
+[
+  {
+    "filename": "01-system-design-equation.svg",
+    "chapter": "01-beyond-the-component.md",
+    "title": "System Design Equation",
+    "description": "System design equation",
+    "caption": "Senior frontend design combines architecture, UI, performance, scalability, and user experience into one operating model.",
+    "idPrefix": "diagram-1",
+    "status": "extracted"
+  },
+  {
+    "filename": "01-component-vs-system-thinking.svg",
+    "chapter": "01-beyond-the-component.md",
+    "title": "Component Thinking Versus System Thinking",
+    "description": "Component thinking versus system thinking",
+    "caption": "Component thinking optimizes the immediate screen. System thinking makes the surrounding contracts explicit before implementation.",
+    "idPrefix": "diagram-2",
+    "status": "extracted"
+  },
+  {
+    "filename": "01-requirements-before-code.svg",
+    "chapter": "01-beyond-the-component.md",
+    "title": "Requirements-Before-Code Flow",
+    "description": "Requirements before code flow",
+    "caption": "The senior path moves from constraints to scale pressure, bottlenecks, design options, and explicit trade-offs.",
+    "idPrefix": "diagram-3",
+    "status": "extracted"
+  },
+  {
+    "filename": "02-real-time-architecture.svg",
+    "chapter": "02-real-time-frontend-systems.md",
+    "title": "Real-Time Frontend Architecture",
+    "description": "Real-time frontend architecture",
+    "caption": "A resilient real-time UI separates transport lifecycle, subscriptions, event processing, state, and rendering.",
+    "idPrefix": "rt-diagram-1",
+    "status": "extracted"
+  },
+  {
+    "filename": "02-websocket-lifecycle.svg",
+    "chapter": "02-real-time-frontend-systems.md",
+    "title": "WebSocket Lifecycle State Machine",
+    "description": "WebSocket lifecycle state machine",
+    "caption": "Connection lifecycle should account for auth, subscriptions, degraded mode, reconnect, and terminal close.",
+    "idPrefix": "rt-diagram-2",
+    "status": "extracted"
+  },
+  {
+    "filename": "02-event-reconciliation.svg",
+    "chapter": "02-real-time-frontend-systems.md",
+    "title": "Event Reconciliation Sequence",
+    "description": "Event reconciliation sequence",
+    "caption": "Events should be validated, deduplicated, ordered, merged, and rendered through stable state boundaries.",
+    "idPrefix": "rt-diagram-3",
+    "status": "extracted"
+  },
+  {
+    "filename": "03-table-architecture.svg",
+    "chapter": "03-high-density-data-management.md",
+    "title": "High-Density Table Architecture",
+    "description": "High-density table architecture",
+    "caption": "Dense data views need a deliberate flow from query model to API delegation, cache shape, virtualized viewport, and row rendering.",
+    "idPrefix": "data-diagram-1",
+    "status": "extracted"
+  },
+  {
+    "filename": "04-schema-rendering-pipeline.svg",
+    "chapter": "04-dynamic-scalable-ui.md",
+    "title": "Schema-Driven Rendering Pipeline",
+    "description": "Schema-driven rendering pipeline",
+    "caption": "A safe dynamic UI pipeline resolves schema against context, selects registered renderers, validates input, and submits through explicit contracts.",
+    "idPrefix": "dynamic-diagram-1",
+    "status": "extracted"
+  },
+  {
+    "filename": "05-state-classification.svg",
+    "chapter": "05-frontend-state-architecture.md",
+    "title": "State Classification Matrix",
+    "description": "State classification matrix",
+    "caption": "Classify state by owner, lifetime, persistence, shareability, and sync need before choosing storage or libraries.",
+    "idPrefix": "state-diagram-1",
+    "status": "extracted"
+  },
+  {
+    "filename": "05-workflow-state-machine.svg",
+    "chapter": "05-frontend-state-architecture.md",
+    "title": "Approval Workflow State Machine",
+    "description": "Workflow state machine for approval",
+    "caption": "Workflow state defines allowed transitions and recovery paths for a multi-step approval flow.",
+    "idPrefix": "state-diagram-3",
+    "status": "extracted"
+  },
+  {
+    "filename": "06-rendering-strategy.svg",
+    "chapter": "06-frontend-performance-architecture.md",
+    "title": "Rendering Strategy Decision Matrix",
+    "description": "Rendering strategy decision matrix",
+    "caption": "Rendering strategy should follow freshness, personalization, cacheability, interactivity, and first-content requirements.",
+    "idPrefix": "perf-diagram-1",
+    "status": "extracted"
+  },
+  {
+    "filename": "07-design-system-operating-model.svg",
+    "chapter": "07-frontend-platforms.md",
+    "title": "Design System Operating Model",
+    "description": "Design system operating model",
+    "caption": "A frontend platform connects design, tokens, components, documentation, governance, and adoption into one operating loop.",
+    "idPrefix": "platform-diagram-1",
+    "status": "extracted"
+  },
+  {
+    "filename": "08-failure-taxonomy.svg",
+    "chapter": "08-failure-handling.md",
+    "title": "Frontend Failure Taxonomy",
+    "description": "Frontend failure taxonomy",
+    "caption": "Different failure classes need different containment, user messaging, retry behavior, and telemetry.",
+    "idPrefix": "failure-diagram-1",
+    "status": "extracted"
+  },
+  {
+    "filename": "08-error-boundaries.svg",
+    "chapter": "08-failure-handling.md",
+    "title": "Error Boundary Placement Map",
+    "description": "Error boundary placement map",
+    "caption": "Boundaries should be placed around app shell, routes, critical sections, and optional widgets so one failure does not erase the whole experience.",
+    "idPrefix": "failure-diagram-2",
+    "status": "extracted"
+  },
+  {
+    "filename": "08-retry-fallback-sequence.svg",
+    "chapter": "08-failure-handling.md",
+    "title": "Retry and Fallback Sequence",
+    "description": "Retry and fallback sequence diagram",
+    "caption": "A resilient sequence classifies the error, chooses retry or fallback, preserves useful state, and records telemetry.",
+    "idPrefix": "failure-diagram-3",
+    "status": "extracted"
+  },
+  {
+    "filename": "08-observability-pipeline.svg",
+    "chapter": "08-failure-handling.md",
+    "title": "Frontend Observability Pipeline",
+    "description": "Observability pipeline",
+    "caption": "Browser events should flow through a telemetry SDK into collection, dashboards, alerts, and incident response.",
+    "idPrefix": "failure-diagram-4",
+    "status": "extracted"
+  },
+  {
+    "filename": "09-auth-session-flow.svg",
+    "chapter": "09-security-architecture.md",
+    "title": "Authentication and Session Flow",
+    "description": "Authentication and session flow",
+    "caption": "A secure frontend auth flow separates browser navigation, identity provider authentication, backend session creation, and API authorization.",
+    "idPrefix": "security-diagram-1",
+    "status": "extracted"
+  },
+  {
+    "filename": "09-rbac-pipeline.svg",
+    "chapter": "09-security-architecture.md",
+    "title": "RBAC Rendering Pipeline",
+    "description": "RBAC rendering pipeline",
+    "caption": "User claims should be evaluated against policy to produce route, data, and action permissions before the UI renders affordances.",
+    "idPrefix": "security-diagram-2",
+    "status": "extracted"
+  },
+  {
+    "filename": "09-browser-security-boundary.svg",
+    "chapter": "09-security-architecture.md",
+    "title": "Browser Security Boundary Map",
+    "description": "Browser security boundary map",
+    "caption": "The browser contains untrusted code execution, storage, network access, third-party scripts, extensions, and user-controlled inputs.",
+    "idPrefix": "security-diagram-3",
+    "status": "extracted"
+  },
+  {
+    "filename": "09-csp-governance.svg",
+    "chapter": "09-security-architecture.md",
+    "title": "CSP and Third-Party Script Governance",
+    "description": "CSP and third-party script governance architecture",
+    "caption": "Third-party scripts should pass ownership, purpose, consent, loading, CSP, and monitoring checks before they execute.",
+    "idPrefix": "security-diagram-4",
+    "status": "extracted"
+  },
+  {
+    "filename": "10-answer-flow.svg",
+    "chapter": "10-system-design-interviews.md",
+    "title": "Senior Frontend System Design Answer Flow",
+    "description": "Senior frontend system design answer flow",
+    "caption": "A strong answer moves from clarification to constraints, architecture, trade-offs, failure handling, and next steps.",
+    "idPrefix": "interview-diagram-1",
+    "status": "extracted"
+  },
+  {
+    "filename": "10-requirements-to-architecture.svg",
+    "chapter": "10-system-design-interviews.md",
+    "title": "Requirements-to-Architecture Map",
+    "description": "Requirements-to-architecture map",
+    "caption": "Requirements should map to concrete architecture decisions across data, rendering, state, UX, security, and operations.",
+    "idPrefix": "interview-diagram-2",
+    "status": "extracted"
+  },
+  {
+    "filename": "10-tradeoff-matrix.svg",
+    "chapter": "10-system-design-interviews.md",
+    "title": "Trade-Off Matrix for Implementation Options",
+    "description": "Trade-off matrix for implementation options",
+    "caption": "A senior answer compares options by user impact, operational complexity, reversibility, performance, and failure behavior.",
+    "idPrefix": "interview-diagram-3",
+    "status": "extracted"
+  },
+  {
+    "filename": "10-interview-rubric.svg",
+    "chapter": "10-system-design-interviews.md",
+    "title": "Interview Evaluation Rubric",
+    "description": "Interview evaluation rubric",
+    "caption": "Interviewers evaluate clarity, constraints, architecture, trade-offs, failure handling, communication, and leadership judgment.",
+    "idPrefix": "interview-diagram-4",
+    "status": "extracted"
+  }
+]

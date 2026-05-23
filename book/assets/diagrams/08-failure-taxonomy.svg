@@ -1,0 +1,24 @@
+<svg width="100%" role="img" aria-labelledby="failure-diagram-1-title failure-diagram-1-desc" viewBox="0 0 940 380" xmlns="http://www.w3.org/2000/svg">
+  <title id="failure-diagram-1-title">Frontend failure taxonomy</title>
+  <desc id="failure-diagram-1-desc">A taxonomy groups rendering, network, API, auth, data, browser, and third-party failures around the user experience.</desc>
+  <rect x="42" y="44" width="856" height="280" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <circle cx="470" cy="184" r="62" fill="#111713" />
+  <text x="470" y="178" text-anchor="middle" font-size="17" font-weight="700" fill="#fffdf8">User</text>
+  <text x="470" y="201" text-anchor="middle" font-size="17" font-weight="700" fill="#fffdf8">journey</text>
+  <g font-size="13.5" font-weight="700" fill="#111211">
+    <rect x="90" y="78" width="132" height="48" rx="9" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="156" y="108" text-anchor="middle">rendering</text>
+    <rect x="354" y="78" width="132" height="48" rx="9" fill="#edf1ec" stroke="#4f6656" />
+    <text x="420" y="108" text-anchor="middle">network</text>
+    <rect x="618" y="78" width="132" height="48" rx="9" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="684" y="108" text-anchor="middle">API</text>
+    <rect x="90" y="238" width="132" height="48" rx="9" fill="#edf1ec" stroke="#4f6656" />
+    <text x="156" y="268" text-anchor="middle">auth</text>
+    <rect x="354" y="286" width="132" height="48" rx="9" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="420" y="316" text-anchor="middle">data</text>
+    <rect x="618" y="238" width="132" height="48" rx="9" fill="#edf1ec" stroke="#4f6656" />
+    <text x="684" y="268" text-anchor="middle">browser</text>
+    <rect x="716" y="158" width="132" height="48" rx="9" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="782" y="188" text-anchor="middle">third-party</text>
+  </g>
+</svg>

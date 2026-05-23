@@ -1,0 +1,31 @@
+<svg width="100%" role="img" aria-labelledby="diagram-1-title diagram-1-desc" viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg">
+  <title id="diagram-1-title">System design equation</title>
+  <desc id="diagram-1-desc">A flow from modern architecture, UI contracts, performance, scalability, and user experience into senior frontend system design.</desc>
+  <rect x="20" y="28" width="860" height="224" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <text x="450" y="62" text-anchor="middle" font-size="24" font-weight="700" fill="#111211">Senior Frontend System Design</text>
+  <g font-size="15" font-weight="700" fill="#111211">
+    <rect x="55" y="110" width="140" height="64" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="125" y="136" text-anchor="middle">Modern</text>
+    <text x="125" y="157" text-anchor="middle">architecture</text>
+    <text x="218" y="148" font-size="28" fill="#63361f">+</text>
+    <rect x="250" y="110" width="115" height="64" rx="10" fill="#f7f1e8" stroke="#8a4f2a" />
+    <text x="307" y="148" text-anchor="middle">UI</text>
+    <text x="388" y="148" font-size="28" fill="#63361f">+</text>
+    <rect x="420" y="110" width="140" height="64" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="490" y="148" text-anchor="middle">Performance</text>
+    <text x="583" y="148" font-size="28" fill="#63361f">+</text>
+    <rect x="615" y="110" width="125" height="64" rx="10" fill="#f7f1e8" stroke="#8a4f2a" />
+    <text x="677" y="148" text-anchor="middle">Scalability</text>
+    <text x="763" y="148" font-size="28" fill="#63361f">+</text>
+    <rect x="795" y="110" width="60" height="64" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="825" y="137" text-anchor="middle">UX</text>
+    <text x="825" y="157" text-anchor="middle">risk</text>
+  </g>
+  <path d="M450 182 V218" stroke="#4f6656" stroke-width="3" marker-end="url(#arrow1)" />
+  <text x="450" y="235" text-anchor="middle" font-size="16" font-weight="700" fill="#4f6656">Design for change, failure, and measurable user outcomes</text>
+  <defs>
+    <marker id="arrow1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f6656" />
+    </marker>
+  </defs>
+</svg>

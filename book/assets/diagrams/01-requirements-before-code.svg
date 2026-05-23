@@ -1,0 +1,31 @@
+<svg width="100%" role="img" aria-labelledby="diagram-3-title diagram-3-desc" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+  <title id="diagram-3-title">Requirements before code flow</title>
+  <desc id="diagram-3-desc">A five-step flow from constraints to scale, bottlenecks, design, and trade-offs.</desc>
+  <rect x="20" y="36" width="860" height="188" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <g font-size="15" font-weight="700" fill="#111211">
+    <rect x="52" y="102" width="130" height="58" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="117" y="126" text-anchor="middle">Constraints</text>
+    <text x="117" y="147" text-anchor="middle">and goals</text>
+    <path d="M185 131 H245" stroke="#4f6656" stroke-width="3" marker-end="url(#arrow3)" />
+    <rect x="256" y="102" width="120" height="58" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="316" y="126" text-anchor="middle">Scale</text>
+    <text x="316" y="147" text-anchor="middle">pressure</text>
+    <path d="M379 131 H439" stroke="#4f6656" stroke-width="3" marker-end="url(#arrow3)" />
+    <rect x="450" y="102" width="135" height="58" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="517" y="126" text-anchor="middle">Bottleneck</text>
+    <text x="517" y="147" text-anchor="middle">map</text>
+    <path d="M588 131 H648" stroke="#4f6656" stroke-width="3" marker-end="url(#arrow3)" />
+    <rect x="659" y="102" width="95" height="58" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="706" y="126" text-anchor="middle">Design</text>
+    <text x="706" y="147" text-anchor="middle">options</text>
+    <path d="M757 131 H803" stroke="#4f6656" stroke-width="3" marker-end="url(#arrow3)" />
+    <rect x="812" y="102" width="48" height="58" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="836" y="126" text-anchor="middle">Trade</text>
+    <text x="836" y="147" text-anchor="middle">offs</text>
+  </g>
+  <defs>
+    <marker id="arrow3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f6656" />
+    </marker>
+  </defs>
+</svg>

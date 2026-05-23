@@ -1,0 +1,34 @@
+<svg width="100%" role="img" aria-labelledby="diagram-2-title diagram-2-desc" viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg">
+  <title id="diagram-2-title">Component thinking versus system thinking</title>
+  <desc id="diagram-2-desc">Two decision paths compare component-first decisions with system-first decisions.</desc>
+  <rect x="28" y="30" width="390" height="300" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <rect x="482" y="30" width="390" height="300" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <text x="223" y="68" text-anchor="middle" font-size="22" font-weight="700" fill="#111211">Component thinking</text>
+  <text x="677" y="68" text-anchor="middle" font-size="22" font-weight="700" fill="#111211">System thinking</text>
+  <g font-size="15" fill="#111211" font-weight="650">
+    <rect x="80" y="105" width="285" height="42" rx="8" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="223" y="131" text-anchor="middle">Pick UI component</text>
+    <path d="M223 148 V176" stroke="#63361f" stroke-width="2" marker-end="url(#arrow2)" />
+    <rect x="80" y="180" width="285" height="42" rx="8" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="223" y="206" text-anchor="middle">Wire local state and API call</text>
+    <path d="M223 223 V251" stroke="#63361f" stroke-width="2" marker-end="url(#arrow2)" />
+    <rect x="80" y="255" width="285" height="42" rx="8" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="223" y="281" text-anchor="middle">Patch edge cases during QA</text>
+    <rect x="535" y="100" width="285" height="38" rx="8" fill="#edf1ec" stroke="#4f6656" />
+    <text x="677" y="124" text-anchor="middle">Clarify constraints</text>
+    <path d="M677 139 V160" stroke="#4f6656" stroke-width="2" marker-end="url(#arrow2)" />
+    <rect x="535" y="164" width="285" height="38" rx="8" fill="#edf1ec" stroke="#4f6656" />
+    <text x="677" y="188" text-anchor="middle">Define state and data contracts</text>
+    <path d="M677 203 V224" stroke="#4f6656" stroke-width="2" marker-end="url(#arrow2)" />
+    <rect x="535" y="228" width="285" height="38" rx="8" fill="#edf1ec" stroke="#4f6656" />
+    <text x="677" y="252" text-anchor="middle">Design failure and recovery</text>
+    <path d="M677 267 V288" stroke="#4f6656" stroke-width="2" marker-end="url(#arrow2)" />
+    <rect x="535" y="292" width="285" height="30" rx="8" fill="#edf1ec" stroke="#4f6656" />
+    <text x="677" y="313" text-anchor="middle">Then choose components</text>
+  </g>
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f6656" />
+    </marker>
+  </defs>
+</svg>

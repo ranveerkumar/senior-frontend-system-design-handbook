@@ -1,0 +1,32 @@
+<svg width="100%" role="img" aria-labelledby="data-diagram-1-title data-diagram-1-desc" viewBox="0 0 920 300" xmlns="http://www.w3.org/2000/svg">
+  <title id="data-diagram-1-title">High-density table architecture</title>
+  <desc id="data-diagram-1-desc">A flow from query model to API, cache, virtualized viewport, and row renderer.</desc>
+  <rect x="24" y="44" width="872" height="210" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <g font-size="14" font-weight="700" fill="#111211">
+    <rect x="56" y="118" width="132" height="64" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="122" y="143" text-anchor="middle">Query model</text>
+    <text x="122" y="164" text-anchor="middle">URL + controls</text>
+    <path d="M192 150 H248" stroke="#4f6656" stroke-width="3" marker-end="url(#data-arrow1)" />
+    <rect x="258" y="118" width="110" height="64" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="313" y="143" text-anchor="middle">API</text>
+    <text x="313" y="164" text-anchor="middle">delegation</text>
+    <path d="M372 150 H428" stroke="#4f6656" stroke-width="3" marker-end="url(#data-arrow1)" />
+    <rect x="438" y="118" width="110" height="64" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="493" y="143" text-anchor="middle">Cache</text>
+    <text x="493" y="164" text-anchor="middle">shape</text>
+    <path d="M552 150 H608" stroke="#4f6656" stroke-width="3" marker-end="url(#data-arrow1)" />
+    <rect x="618" y="108" width="138" height="84" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="687" y="139" text-anchor="middle">Virtualized</text>
+    <text x="687" y="160" text-anchor="middle">viewport</text>
+    <path d="M760 150 H812" stroke="#4f6656" stroke-width="3" marker-end="url(#data-arrow1)" />
+    <rect x="822" y="118" width="54" height="64" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="849" y="143" text-anchor="middle">Row</text>
+    <text x="849" y="164" text-anchor="middle">UI</text>
+  </g>
+  <text x="460" y="224" text-anchor="middle" font-size="15" font-weight="700" fill="#63361f">The browser renders a window, not the whole dataset.</text>
+  <defs>
+    <marker id="data-arrow1" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f6656" />
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,34 @@
+<svg width="100%" role="img" aria-labelledby="rt-diagram-2-title rt-diagram-2-desc" viewBox="0 0 920 380" xmlns="http://www.w3.org/2000/svg">
+  <title id="rt-diagram-2-title">WebSocket lifecycle state machine</title>
+  <desc id="rt-diagram-2-desc">A state machine with idle, connecting, authenticated, subscribed, degraded, reconnecting, and closed states.</desc>
+  <rect x="30" y="34" width="860" height="310" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <g font-size="14" font-weight="700" fill="#111211">
+    <rect x="80" y="80" width="110" height="46" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="135" y="109" text-anchor="middle">idle</text>
+    <path d="M190 103 H262" stroke="#4f6656" stroke-width="3" marker-end="url(#rt-arrow2)" />
+    <rect x="272" y="80" width="130" height="46" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="337" y="109" text-anchor="middle">connecting</text>
+    <path d="M402 103 H474" stroke="#4f6656" stroke-width="3" marker-end="url(#rt-arrow2)" />
+    <rect x="484" y="80" width="145" height="46" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="556" y="109" text-anchor="middle">authenticated</text>
+    <path d="M629 103 H701" stroke="#4f6656" stroke-width="3" marker-end="url(#rt-arrow2)" />
+    <rect x="711" y="80" width="125" height="46" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="773" y="109" text-anchor="middle">subscribed</text>
+    <path d="M773 127 V184" stroke="#63361f" stroke-width="3" marker-end="url(#rt-arrow2)" />
+    <rect x="706" y="194" width="135" height="46" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="773" y="223" text-anchor="middle">degraded</text>
+    <path d="M706 217 H596" stroke="#63361f" stroke-width="3" marker-end="url(#rt-arrow2)" />
+    <rect x="450" y="194" width="136" height="46" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="518" y="223" text-anchor="middle">reconnecting</text>
+    <path d="M518 194 V137" stroke="#4f6656" stroke-width="3" marker-end="url(#rt-arrow2)" />
+    <path d="M450 217 H282" stroke="#63361f" stroke-width="3" marker-end="url(#rt-arrow2)" />
+    <rect x="138" y="194" width="134" height="46" rx="10" fill="#f7f1e8" stroke="#8a4f2a" />
+    <text x="205" y="223" text-anchor="middle">closed</text>
+    <text x="460" y="300" text-anchor="middle" font-size="15" fill="#63361f">Failures do not jump straight to blank UI. They move through degraded and reconnecting states first.</text>
+  </g>
+  <defs>
+    <marker id="rt-arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f6656" />
+    </marker>
+  </defs>
+</svg>

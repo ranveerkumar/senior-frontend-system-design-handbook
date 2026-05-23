@@ -1,0 +1,28 @@
+<svg width="100%" role="img" aria-labelledby="state-diagram-3-title state-diagram-3-desc" viewBox="0 0 940 380" xmlns="http://www.w3.org/2000/svg">
+  <title id="state-diagram-3-title">Workflow state machine for approval</title>
+  <desc id="state-diagram-3-desc">A workflow moves from draft to submitted, review, approved, rejected, or changes requested with explicit transitions.</desc>
+  <rect x="34" y="42" width="872" height="290" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <g font-size="14" font-weight="700" fill="#111211">
+    <rect x="82" y="150" width="110" height="50" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="137" y="181" text-anchor="middle">draft</text>
+    <path d="M196 175 H286" stroke="#4f6656" stroke-width="3" marker-end="url(#state-arrow3)" />
+    <rect x="296" y="150" width="120" height="50" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="356" y="181" text-anchor="middle">submitted</text>
+    <path d="M420 175 H510" stroke="#4f6656" stroke-width="3" marker-end="url(#state-arrow3)" />
+    <rect x="520" y="150" width="110" height="50" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="575" y="181" text-anchor="middle">review</text>
+    <path d="M634 155 H724" stroke="#4f6656" stroke-width="3" marker-end="url(#state-arrow3)" />
+    <rect x="734" y="104" width="110" height="50" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="789" y="135" text-anchor="middle">approved</text>
+    <path d="M634 195 H724" stroke="#63361f" stroke-width="3" marker-end="url(#state-arrow3)" />
+    <rect x="734" y="196" width="110" height="50" rx="10" fill="#f7f1e8" stroke="#8a4f2a" />
+    <text x="789" y="227" text-anchor="middle">rejected</text>
+    <path d="M575 202 V262 H210 V205" stroke="#63361f" stroke-width="3" fill="none" marker-end="url(#state-arrow3)" />
+    <text x="390" y="286" text-anchor="middle" font-size="14" fill="#63361f">changes requested returns to draft with reason</text>
+  </g>
+  <defs>
+    <marker id="state-arrow3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f6656" />
+    </marker>
+  </defs>
+</svg>

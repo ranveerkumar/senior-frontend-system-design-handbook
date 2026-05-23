@@ -1,0 +1,32 @@
+<svg width="100%" role="img" aria-labelledby="failure-diagram-4-title failure-diagram-4-desc" viewBox="0 0 940 300" xmlns="http://www.w3.org/2000/svg">
+  <title id="failure-diagram-4-title">Observability pipeline</title>
+  <desc id="failure-diagram-4-desc">Browser events move to a telemetry SDK, collector, dashboards, alerts, and incident response.</desc>
+  <rect x="28" y="48" width="884" height="202" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <g font-size="13.5" font-weight="700" fill="#111211">
+    <rect x="58" y="120" width="116" height="58" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="116" y="144" text-anchor="middle">browser</text>
+    <text x="116" y="164" text-anchor="middle">events</text>
+    <path d="M178 149 H234" stroke="#4f6656" stroke-width="3" marker-end="url(#failure-arrow4)" />
+    <rect x="244" y="120" width="116" height="58" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="302" y="144" text-anchor="middle">telemetry</text>
+    <text x="302" y="164" text-anchor="middle">SDK</text>
+    <path d="M364 149 H420" stroke="#4f6656" stroke-width="3" marker-end="url(#failure-arrow4)" />
+    <rect x="430" y="120" width="116" height="58" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="488" y="144" text-anchor="middle">collector</text>
+    <text x="488" y="164" text-anchor="middle">pipeline</text>
+    <path d="M550 149 H606" stroke="#4f6656" stroke-width="3" marker-end="url(#failure-arrow4)" />
+    <rect x="616" y="120" width="116" height="58" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="674" y="144" text-anchor="middle">dashboards</text>
+    <text x="674" y="164" text-anchor="middle">and traces</text>
+    <path d="M736 149 H792" stroke="#4f6656" stroke-width="3" marker-end="url(#failure-arrow4)" />
+    <rect x="802" y="120" width="70" height="58" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="837" y="144" text-anchor="middle">alerts</text>
+    <text x="837" y="164" text-anchor="middle">IR</text>
+  </g>
+  <text x="470" y="222" text-anchor="middle" font-size="15" font-weight="700" fill="#63361f">Telemetry should explain user impact, not just exception volume.</text>
+  <defs>
+    <marker id="failure-arrow4" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f6656" />
+    </marker>
+  </defs>
+</svg>

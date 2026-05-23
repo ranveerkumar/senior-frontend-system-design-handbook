@@ -1,0 +1,28 @@
+<svg width="100%" role="img" aria-labelledby="rt-diagram-3-title rt-diagram-3-desc" viewBox="0 0 920 260" xmlns="http://www.w3.org/2000/svg">
+  <title id="rt-diagram-3-title">Event reconciliation sequence</title>
+  <desc id="rt-diagram-3-desc">A sequence from receive to validate, deduplicate, order, merge, and render.</desc>
+  <rect x="22" y="36" width="876" height="188" rx="14" fill="#fffdf8" stroke="#ddd3c4" />
+  <g font-size="14" font-weight="700" fill="#111211">
+    <rect x="50" y="104" width="104" height="52" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="102" y="136" text-anchor="middle">receive</text>
+    <path d="M158 130 H212" stroke="#4f6656" stroke-width="3" marker-end="url(#rt-arrow3)" />
+    <rect x="222" y="104" width="104" height="52" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="274" y="136" text-anchor="middle">validate</text>
+    <path d="M330 130 H384" stroke="#4f6656" stroke-width="3" marker-end="url(#rt-arrow3)" />
+    <rect x="394" y="104" width="116" height="52" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="452" y="136" text-anchor="middle">deduplicate</text>
+    <path d="M514 130 H568" stroke="#4f6656" stroke-width="3" marker-end="url(#rt-arrow3)" />
+    <rect x="578" y="104" width="96" height="52" rx="10" fill="#edf1ec" stroke="#4f6656" />
+    <text x="626" y="136" text-anchor="middle">order</text>
+    <path d="M678 130 H732" stroke="#4f6656" stroke-width="3" marker-end="url(#rt-arrow3)" />
+    <rect x="742" y="104" width="72" height="52" rx="10" fill="#efe8dc" stroke="#8a4f2a" />
+    <text x="778" y="136" text-anchor="middle">merge</text>
+    <path d="M818 130 H856" stroke="#4f6656" stroke-width="3" marker-end="url(#rt-arrow3)" />
+    <text x="866" y="136" font-size="15">render</text>
+  </g>
+  <defs>
+    <marker id="rt-arrow3" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#4f6656" />
+    </marker>
+  </defs>
+</svg>

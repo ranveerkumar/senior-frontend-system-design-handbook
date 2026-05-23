@@ -1,0 +1,30 @@
+{
+  "title": "Senior Frontend System Design Handbook",
+  "subtitle": "Beyond the Component",
+  "version": "1.0",
+  "author": "Ranveer Kumar",
+  "authorTitle": "UI Technology Director, Frontend Architecture Practitioner",
+  "authorBio": "Ranveer Kumar is a UI Technology Director and Frontend Architecture Practitioner with 22+ years of experience designing scalable UI systems, leading large engineering organizations, building frontend platforms and design systems, and applying AI-assisted engineering practices. He has led and mentored 100+ engineers annually across 14+ industries. Beyond software, he builds smart living systems, solar power infrastructure, home automation, homelab environments, hardware/electronics, woodworking, metal work, and smart/organic farming systems.",
+  "authorUrl": "https://ranveerkumar.com",
+  "blogUrl": "https://blog.ranveerkumar.com",
+  "portfolioUrl": "https://portfolio.ranveerkumar.com",
+  "publicationDate": "2026-05-23",
+  "license": "CC BY-NC-ND 4.0",
+  "description": "A practical field guide for senior frontend engineers, UI architects, and engineering leaders designing scalable, performant, resilient, secure, and maintainable frontend systems.",
+  "sourceSeriesUrl": "https://blog.ranveerkumar.com/series/senior-frontend-system-design",
+  "chapters": [
+    { "file": "chapters/00-preface.md", "title": "Preface" },
+    { "file": "chapters/01-beyond-the-component.md", "title": "Chapter 1: Beyond the Component" },
+    { "file": "chapters/02-real-time-frontend-systems.md", "title": "Chapter 2: Real-Time Frontend Systems" },
+    { "file": "chapters/03-high-density-data-management.md", "title": "Chapter 3: High-Density Data Management" },
+    { "file": "chapters/04-dynamic-scalable-ui.md", "title": "Chapter 4: Dynamic and Scalable UI" },
+    { "file": "chapters/05-frontend-state-architecture.md", "title": "Chapter 5: Frontend State Architecture" },
+    { "file": "chapters/06-frontend-performance-architecture.md", "title": "Chapter 6: Frontend Performance Architecture" },
+    { "file": "chapters/07-frontend-platforms.md", "title": "Chapter 7: Designing Frontend Platforms" },
+    { "file": "chapters/08-failure-handling.md", "title": "Chapter 8: Failure Handling in Frontend Systems" },
+    { "file": "chapters/09-security-architecture.md", "title": "Chapter 9: Frontend Security Architecture" },
+    { "file": "chapters/10-system-design-interviews.md", "title": "Chapter 10: Senior Frontend System Design Interviews" },
+    { "file": "chapters/11-closing-note.md", "title": "Closing Note" },
+    { "file": "chapters/12-about-the-author.md", "title": "About the Author" }
+  ]
+}
