@@ -15,7 +15,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 const BOOK_DIR = join(ROOT, "book");
-const OUTPUT_DIR = join(BOOK_DIR, "output");
+const OUTPUT_DIR = join(ROOT, "pdf");
 
 // ─── Load dependencies ──────────────────────────────────────────────────────
 
