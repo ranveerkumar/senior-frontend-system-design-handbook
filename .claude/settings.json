@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(open /Users/ranveer.kumar/work/senior-frontend-system-design-handbook/pdf/senior-frontend-system-design-handbook.pdf)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(list\\(d.get\\('scripts',{}\\).keys\\(\\)\\)\\)\")",
+      "Bash(mdls -name kMDItemNumberOfPages /Users/ranveer.kumar/work/senior-frontend-system-design-handbook/pdf/senior-frontend-system-design-handbook.pdf)"
+    ]
+  }
+}

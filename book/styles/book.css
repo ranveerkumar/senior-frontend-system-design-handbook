@@ -1,8 +1,10 @@
-/* Senior Frontend System Design Handbook — Print Stylesheet */
+/* Senior Frontend System Design Handbook — Book Print Stylesheet */
 
-/* ─── Typography ─────────────────────────────────── */
+/* ─── Google Fonts ─────────────────────────────────── */
 
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ─── Design Tokens ──────────────────────────────────── */
 
 :root {
   --color-ink:        #111211;
@@ -14,6 +16,7 @@
   --color-border:     #ddd3c4;
   --color-border-alt: #efe8dc;
   --color-accent:     #8a4f2a;
+  --color-dark:       #111713;
 
   --font-serif:  'Lora', Georgia, 'Times New Roman', serif;
   --font-sans:   'Inter', system-ui, -apple-system, sans-serif;
@@ -22,34 +25,29 @@
   --text-base:    11pt;
   --text-sm:      9.5pt;
   --text-xs:      8.5pt;
-  --line-height:  1.7;
-  --page-margin:  2cm 2.2cm 2.4cm 2.2cm;
+  --line-height:  1.75;
 }
 
-/* ─── Page Setup ─────────────────────────────────── */
+/* ─── Page Setup ──────────────────────────────────────── */
 
 @page {
   size: A4;
-  margin: var(--page-margin);
-
-  @bottom-center {
-    content: counter(page);
-    font-family: var(--font-sans);
-    font-size: 9pt;
-    color: var(--color-muted);
-  }
+  margin: 2cm 2.2cm 2.4cm 2.2cm;
 }
 
-@page :first {
-  @bottom-center { content: none; }
-}
-
+/* Named page — cover: full-bleed, no margin */
 @page cover {
+  size: A4;
   margin: 0;
-  @bottom-center { content: none; }
 }
 
-/* ─── Base ───────────────────────────────────────── */
+/* Named page — no-number (part dividers, chapter title pages) */
+@page no-number {
+  size: A4;
+  margin: 2cm 2.2cm 2.4cm 2.2cm;
+}
+
+/* ─── Base ─────────────────────────────────────────────── */
 
 html, body {
   font-family:   var(--font-serif);
@@ -61,115 +59,517 @@ html, body {
   print-color-adjust: exact;
 }
 
-/* ─── Cover Page ─────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════
+   COVER PAGE
+   ═══════════════════════════════════════════════════════ */
 
 .cover-page {
   page: cover;
+  page-break-after: always;
+  break-after: page;
+  width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Custom cover image */
+.cover-page--image {
+  background: #111713;
+}
+
+.cover-full-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+}
+
+/* Auto-generated HTML cover */
+.cover-page--html {
+  background-color: var(--color-dark);
+  background-image:
+    radial-gradient(ellipse at 20% 80%, rgba(79, 102, 86, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(99, 54, 31, 0.12) 0%, transparent 60%);
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: 100vh;
-  background-color: #111713;
-  color: var(--color-cream);
+}
+
+.cover-inner {
   padding: 3cm;
-  page-break-after: always;
+  max-width: 18cm;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.cover-page .cover-eyebrow {
+.cover-eyebrow {
   font-family: var(--font-sans);
-  font-size: 10pt;
+  font-size: 8pt;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-border-alt);
-  margin-bottom: 2rem;
+  color: var(--color-sage);
+  margin: 0 0 2.5rem;
 }
 
-.cover-page .cover-title {
+.cover-title {
   font-family: var(--font-serif);
-  font-size: 32pt;
+  font-size: 30pt;
   font-weight: 700;
   line-height: 1.15;
   color: var(--color-cream);
   margin: 0 0 1rem;
+  border: none;
+  padding: 0;
 }
 
-.cover-page .cover-subtitle {
+.cover-subtitle {
   font-family: var(--font-serif);
-  font-size: 18pt;
+  font-size: 16pt;
   font-weight: 400;
   font-style: italic;
   color: var(--color-border-alt);
-  margin: 0 0 3rem;
+  margin: 0 0 2.5rem;
 }
 
-.cover-page .cover-rule {
-  width: 80px;
-  height: 3px;
+.cover-rule {
+  width: 64px;
+  height: 2px;
   background: var(--color-sage);
-  margin: 0 auto 3rem;
+  margin: 0 auto 2.5rem;
   border: none;
 }
 
-.cover-page .cover-author {
+.cover-author {
   font-family: var(--font-sans);
-  font-size: 12pt;
-  font-weight: 500;
+  font-size: 13pt;
+  font-weight: 600;
   color: var(--color-cream);
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.4rem;
 }
 
-.cover-page .cover-meta {
+.cover-meta {
   font-family: var(--font-sans);
-  font-size: 9pt;
-  color: #8a8a7a;
-  margin-bottom: 0.25rem;
+  font-size: 8.5pt;
+  color: #7a7a6a;
+  margin: 0 0 0.2rem;
 }
 
-/* ─── Part Dividers ──────────────────────────────── */
+.cover-footer-meta {
+  font-family: var(--font-sans);
+  font-size: 7.5pt;
+  color: #5a5a4a;
+  margin-top: 3rem;
+  letter-spacing: 0.04em;
+}
 
-.part-page {
+.cover-meta-sep {
+  margin: 0 0.5rem;
+  opacity: 0.5;
+}
+
+/* ═══════════════════════════════════════════════════════
+   COPYRIGHT PAGE
+   ═══════════════════════════════════════════════════════ */
+
+.copyright-page {
+  page-break-before: always;
+  break-before: page;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  min-height: 60vh;
-  padding: 2rem 0;
-  page-break-before: always;
-  page-break-after: always;
-  border-bottom: 2px solid var(--color-border);
-  margin-bottom: 2rem;
+  justify-content: flex-end;
+  min-height: calc(297mm - 4.4cm);
+  padding-bottom: 0.5cm;
 }
 
-.part-label {
+.copyright-content {
   font-family: var(--font-sans);
-  font-size: 9pt;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: var(--text-xs);
   color: var(--color-muted);
-  margin-bottom: 0.75rem;
+  line-height: 1.7;
 }
 
-.part-title {
+.copyright-content p {
+  margin: 0 0 0.5rem;
+  color: var(--color-muted);
+}
+
+.copyright-content strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+.copyright-content a {
+  color: var(--color-muted);
+  text-decoration: none;
+}
+
+.copyright-book-title {
+  font-family: var(--font-serif) !important;
+  font-size: 12pt !important;
+  font-weight: 700 !important;
+  color: var(--color-ink) !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.copyright-subtitle {
+  font-family: var(--font-serif) !important;
+  font-size: 10pt !important;
+  font-style: italic;
+  color: var(--color-muted) !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   TABLE OF CONTENTS
+   ═══════════════════════════════════════════════════════ */
+
+.toc-page {
+  page-break-before: always;
+  break-before: page;
+}
+
+.toc-heading {
   font-family: var(--font-serif);
   font-size: 22pt;
   font-weight: 700;
   color: var(--color-ink);
+  border: none;
+  padding: 0;
+  margin: 0 0 2.5rem;
 }
 
-/* ─── Chapter Structure ──────────────────────────── */
+.toc {
+  font-family: var(--font-sans);
+}
 
-.chapter {
+.toc-item {
+  font-size: 10pt;
+  padding: 0.4rem 0;
+  color: var(--color-ink);
+  border-bottom: 1px solid var(--color-border-alt);
+}
+
+.toc-item--front {
+  font-style: italic;
+  color: var(--color-muted);
+  border-bottom: none;
+  margin-bottom: 1.5rem;
+}
+
+.toc-item--back {
+  font-size: 9.5pt;
+  color: var(--color-muted);
+  border-bottom: none;
+  padding: 0.35rem 0;
+}
+
+.toc-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 1.5rem 0;
+}
+
+.toc-part {
+  margin-bottom: 1.25rem;
+}
+
+.toc-part-label {
+  font-size: 8pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  padding: 0.75rem 0 0.4rem;
+  border-top: 2px solid var(--color-border);
+}
+
+.toc-chapter {
+  font-size: 10pt;
+  color: var(--color-ink);
+  padding: 0.3rem 0 0.3rem 1rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  border-bottom: 1px solid var(--color-border-alt);
+}
+
+.toc-chapter-num {
+  font-size: 8pt;
+  font-weight: 600;
+  color: var(--color-muted);
+  min-width: 5.5em;
+  flex-shrink: 0;
+}
+
+.toc-chapter-dot {
+  color: var(--color-border);
+}
+
+.toc-chapter-name {
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════
+   FRONT MATTER (Preface)
+   ═══════════════════════════════════════════════════════ */
+
+.front-matter-page {
   page-break-before: always;
+  break-before: page;
 }
 
-.chapter:first-of-type {
-  page-break-before: auto;
+.front-matter-heading {
+  font-family: var(--font-serif);
+  font-size: 22pt;
+  font-weight: 700;
+  color: var(--color-ink);
+  border: none;
+  padding: 0;
+  margin: 0 0 2rem;
 }
 
-/* ─── Headings ───────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════
+   PART DIVIDER PAGES
+   ═══════════════════════════════════════════════════════ */
+
+.part-divider-page {
+  page: no-number;
+  page-break-before: always;
+  break-before: page;
+  page-break-after: always;
+  break-after: page;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(297mm - 4.4cm);
+  background-color: var(--color-dark);
+  background-image:
+    radial-gradient(ellipse at 15% 85%, rgba(79, 102, 86, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(99, 54, 31, 0.14) 0%, transparent 55%);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  padding: 0;
+}
+
+.part-divider-content {
+  padding: 2.5cm;
+  max-width: 24cm;
+}
+
+.part-divider-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 8pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-sage);
+  margin-bottom: 1.75rem;
+}
+
+.part-divider-title {
+  font-family: var(--font-serif);
+  font-size: 26pt;
+  font-weight: 700;
+  color: var(--color-cream);
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.part-divider-rule {
+  width: 48px;
+  height: 2px;
+  background: var(--color-sage);
+  margin-bottom: 1.5rem;
+}
+
+.part-divider-desc {
+  font-family: var(--font-sans);
+  font-size: 11pt;
+  color: #8a8a7a;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 30em;
+}
+
+.part-divider-chapters {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.part-divider-chapters li {
+  font-family: var(--font-sans);
+  font-size: 9pt;
+  color: #5a5a4a;
+  padding: 0.2rem 0;
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CHAPTER TITLE PAGES
+   ═══════════════════════════════════════════════════════ */
+
+.chapter-title-page {
+  page: no-number;
+  page-break-before: always;
+  break-before: page;
+  page-break-after: always;
+  break-after: page;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(297mm - 4.4cm);
+  background-color: #faf8f4;
+  border-left: 4px solid var(--color-accent);
+  padding: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.chapter-title-content {
+  padding: 2.5cm 2.5cm 2.5cm calc(2.5cm - 4px);
+}
+
+.chapter-title-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 8pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 1.5rem;
+}
+
+.chapter-title-rule {
+  width: 48px;
+  height: 2px;
+  background: var(--color-accent);
+  margin-bottom: 2rem;
+}
+
+.chapter-title-heading {
+  font-family: var(--font-serif);
+  font-size: 28pt;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-ink);
+  margin: 0 0 2rem;
+  padding: 0;
+  border: none;
+}
+
+.chapter-title-subtitle {
+  font-family: var(--font-sans);
+  font-size: 10.5pt;
+  color: var(--color-muted);
+  line-height: 1.65;
+  max-width: 34em;
+  margin: 0;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CHAPTER CONTENT
+   ═══════════════════════════════════════════════════════ */
+
+.chapter-content {
+  page-break-before: always;
+  break-before: page;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CLOSING NOTE
+   ═══════════════════════════════════════════════════════ */
+
+.closing-note-page {
+  page-break-before: always;
+  break-before: page;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ABOUT THE AUTHOR
+   ═══════════════════════════════════════════════════════ */
+
+.about-author-page {
+  page-break-before: always;
+  break-before: page;
+}
+
+.about-author-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.author-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.about-author-title-block {
+  flex: 1;
+}
+
+.about-author-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 7.5pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 0.25rem;
+}
+
+.about-author-name {
+  font-family: var(--font-serif);
+  font-size: 18pt;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 0 0 0.3rem;
+  padding: 0;
+  border: none;
+}
+
+.about-author-role {
+  font-family: var(--font-sans);
+  font-size: 9pt;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* Override h1/h2 inside about-author to not look like chapters */
+.about-author-page h1 {
+  font-size: 13pt;
+  border: none;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.about-author-page h2 {
+  font-size: 11pt;
+  color: var(--color-brown);
+  margin-top: 1.75rem;
+}
+
+/* ═══════════════════════════════════════════════════════
+   HEADINGS
+   ═══════════════════════════════════════════════════════ */
 
 h1 {
   font-family:   var(--font-serif);
@@ -204,16 +604,18 @@ h3 {
 
 h4 {
   font-family:   var(--font-sans);
-  font-size:     10pt;
+  font-size:     9.5pt;
   font-weight:   600;
   color:         var(--color-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   margin-top:    1.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
-/* ─── Chapter Metadata Block ─────────────────────── */
+/* ═══════════════════════════════════════════════════════
+   CHAPTER METADATA BLOCK (objective / why this matters)
+   ═══════════════════════════════════════════════════════ */
 
 .chapter-meta {
   background:    var(--color-bg-surface);
@@ -234,7 +636,9 @@ h4 {
   color: var(--color-ink);
 }
 
-/* ─── Body Text ──────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════
+   BODY TEXT
+   ═══════════════════════════════════════════════════════ */
 
 p {
   margin:      0 0 0.85rem;
@@ -242,7 +646,14 @@ p {
   widows:      3;
 }
 
-/* ─── Pull Quotes ────────────────────────────────── */
+strong {
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+/* ═══════════════════════════════════════════════════════
+   PULL QUOTES / BLOCKQUOTES
+   ═══════════════════════════════════════════════════════ */
 
 blockquote {
   border-left:   3px solid var(--color-sage);
@@ -259,8 +670,6 @@ blockquote p {
   margin:      0;
 }
 
-/* ─── Warning / Note Boxes ───────────────────────── */
-
 blockquote strong:first-child {
   display:       block;
   font-style:    normal;
@@ -271,25 +680,27 @@ blockquote strong:first-child {
   margin-bottom: 0.5rem;
 }
 
-/* ─── Code ───────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════
+   CODE
+   ═══════════════════════════════════════════════════════ */
 
 code {
-  font-family:     var(--font-mono);
-  font-size:       var(--text-sm);
-  background:      var(--color-bg-surface);
-  border:          1px solid var(--color-border);
-  border-radius:   3px;
-  padding:         0.1em 0.35em;
-  color:           var(--color-brown);
-  word-break:      break-word;
+  font-family:   var(--font-mono);
+  font-size:     var(--text-sm);
+  background:    var(--color-bg-surface);
+  border:        1px solid var(--color-border);
+  border-radius: 3px;
+  padding:       0.1em 0.35em;
+  color:         var(--color-brown);
+  word-break:    break-word;
 }
 
 pre {
-  background:      #111713;
-  border-radius:   8px;
-  padding:         1rem 1.25rem;
-  margin:          1.25rem 0;
-  overflow-x:      auto;
+  background:    #111713;
+  border-radius: 8px;
+  padding:       1rem 1.25rem;
+  margin:        1.25rem 0;
+  overflow-x:    auto;
   page-break-inside: avoid;
 }
 
@@ -304,7 +715,9 @@ pre code {
   white-space:  pre;
 }
 
-/* ─── Figures, SVGs, and Images ─────────────────── */
+/* ═══════════════════════════════════════════════════════
+   FIGURES, IMAGES, DIAGRAMS
+   ═══════════════════════════════════════════════════════ */
 
 figure {
   margin:          1.5rem 0;
@@ -312,7 +725,7 @@ figure {
   text-align:      center;
 }
 
-figure svg {
+figure svg, figure img {
   max-width:    100%;
   height:       auto;
 }
@@ -337,7 +750,6 @@ figure strong {
   margin-bottom: 0.5rem;
 }
 
-/* Markdown diagram images — ![alt](*.svg) */
 img {
   display:           block;
   max-width:         100%;
@@ -346,7 +758,6 @@ img {
   page-break-inside: avoid;
 }
 
-/* Italic paragraph immediately after a diagram image = caption */
 p:has(> img) + p > em:only-child {
   display:      block;
   text-align:   center;
@@ -356,7 +767,9 @@ p:has(> img) + p > em:only-child {
   margin:       0 auto 1.5rem;
 }
 
-/* ─── Tables ─────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════
+   TABLES
+   ═══════════════════════════════════════════════════════ */
 
 table {
   width:           100%;
@@ -390,7 +803,9 @@ tr:last-child td {
   border-bottom: none;
 }
 
-/* ─── Lists ──────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════
+   LISTS
+   ═══════════════════════════════════════════════════════ */
 
 ul, ol {
   margin:   0.5rem 0 0.85rem 1.5rem;
@@ -401,12 +816,13 @@ li {
   margin-bottom: 0.3rem;
 }
 
-/* Task lists (checklists) */
 li input[type="checkbox"] {
   margin-right: 0.5rem;
 }
 
-/* ─── Horizontal Rules ───────────────────────────── */
+/* ═══════════════════════════════════════════════════════
+   HORIZONTAL RULES
+   ═══════════════════════════════════════════════════════ */
 
 hr {
   border:     none;
@@ -414,51 +830,18 @@ hr {
   margin:     2rem 0;
 }
 
-/* ─── Links ──────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════
+   LINKS
+   ═══════════════════════════════════════════════════════ */
 
 a {
   color:           var(--color-sage);
   text-decoration: underline;
 }
 
-/* In print, show URLs for external links */
-@media print {
-  a[href^="http"]:after {
-    content: " (" attr(href) ")";
-    font-size: 8pt;
-    color: var(--color-muted);
-    word-break: break-all;
-  }
-
-  /* Don't show URLs for internal navigation links */
-  .chapter-nav a:after,
-  .toc a:after {
-    content: none;
-  }
-}
-
-/* ─── Chapter Navigation Footer ─────────────────── */
-
-.chapter-nav {
-  margin-top:    3rem;
-  padding-top:   1rem;
-  border-top:    1px solid var(--color-border);
-  font-family:   var(--font-sans);
-  font-size:     var(--text-xs);
-  color:         var(--color-muted);
-  display:       flex;
-  justify-content: space-between;
-}
-
-.chapter-source {
-  margin-top:  1rem;
-  font-family: var(--font-sans);
-  font-size:   var(--text-xs);
-  color:       var(--color-muted);
-  font-style:  italic;
-}
-
-/* ─── Print Optimizations ────────────────────────── */
+/* ═══════════════════════════════════════════════════════
+   PRINT OPTIMIZATIONS
+   ═══════════════════════════════════════════════════════ */
 
 @media print {
   h1, h2, h3, h4 {
@@ -469,7 +852,8 @@ a {
     page-break-inside: avoid;
   }
 
-  .chapter {
-    page-break-before: always;
+  /* Prevent URLs from printing after every link — keeps PDF clean */
+  a[href]:after {
+    content: none !important;
   }
 }

@@ -33,6 +33,7 @@
   "license": "CC-BY-NC-ND-4.0",
   "devDependencies": {
     "marked": "^16.0.0",
+    "pdf-lib": "^1.17.1",
     "puppeteer": "^24.0.0"
   }
 }

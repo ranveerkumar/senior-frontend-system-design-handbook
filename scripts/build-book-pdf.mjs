@@ -1,218 +1,530 @@
 #!/usr/bin/env node
 /**
- * Senior Frontend System Design Handbook — PDF Build Script
+ * Senior Frontend System Design Handbook — Premium PDF Build Script
  *
- * Usage: npm run book:pdf
- * Output: book/output/senior-frontend-system-design-handbook.pdf
+ * Strategy: Two-pass PDF generation
+ *   Pass 1 — cover.pdf   (no header/footer, zero margins, full-bleed)
+ *   Pass 2 — body.pdf    (copyright → TOC → chapters → author, with page numbers)
+ *   Merge   — pdf-lib merges cover + body into the final output PDF
  *
- * Requires: npm install --save-dev marked puppeteer
+ * Usage:  npm run book:pdf
+ * Output: pdf/senior-frontend-system-design-handbook.pdf
  */
 
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, unlinkSync } from "node:fs";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const ROOT = resolve(__dirname, "..");
-const BOOK_DIR = join(ROOT, "book");
+const ROOT      = resolve(__dirname, "..");
+const BOOK_DIR  = join(ROOT, "book");
 const OUTPUT_DIR = join(ROOT, "pdf");
 
-// ─── Load dependencies ──────────────────────────────────────────────────────
+// ─── Load dependencies ───────────────────────────────────────────────────────
 
-let marked, puppeteer;
+let marked, puppeteer, PDFDocument;
 
 try {
   ({ marked } = await import("marked"));
 } catch {
-  console.error(
-    "\n[book:pdf] Missing dependency: marked\n" +
-    "  Run: npm install --save-dev marked\n"
-  );
+  console.error("\n[book:pdf] Missing dependency: marked\n  Run: npm install --save-dev marked\n");
   process.exit(1);
 }
 
 try {
   puppeteer = (await import("puppeteer")).default;
 } catch {
-  console.error(
-    "\n[book:pdf] Missing dependency: puppeteer\n" +
-    "  Run: npm install --save-dev puppeteer\n"
-  );
+  console.error("\n[book:pdf] Missing dependency: puppeteer\n  Run: npm install --save-dev puppeteer\n");
   process.exit(1);
 }
 
-// ─── Load book metadata ─────────────────────────────────────────────────────
+try {
+  ({ PDFDocument } = await import("pdf-lib"));
+} catch {
+  console.error("\n[book:pdf] Missing dependency: pdf-lib\n  Run: npm install --save-dev pdf-lib\n");
+  process.exit(1);
+}
+
+// ─── Book metadata ────────────────────────────────────────────────────────────
 
 const metadata = JSON.parse(readFileSync(join(BOOK_DIR, "metadata.json"), "utf-8"));
-const CSS_PATH = join(BOOK_DIR, "styles", "book.css");
-const cssContent = readFileSync(CSS_PATH, "utf-8");
 
-// ─── Configure marked ───────────────────────────────────────────────────────
+// ─── Parts structure ──────────────────────────────────────────────────────────
 
-marked.setOptions({
-  gfm: true,
-  breaks: false,
-});
+const PARTS = [
+  {
+    number: "I",
+    title: "The Senior Frontend Mental Model",
+    description: "From component thinking to system design judgment",
+    chapters: [1],
+  },
+  {
+    number: "II",
+    title: "Data, State, and Dynamic UI",
+    description: "Real-time systems, high-density data, dynamic UI, and state architecture",
+    chapters: [2, 3, 4, 5],
+  },
+  {
+    number: "III",
+    title: "Performance, Platform, and Reliability",
+    description: "Performance architecture, frontend platforms, and failure handling at system scale",
+    chapters: [6, 7, 8],
+  },
+  {
+    number: "IV",
+    title: "Security and Interviews",
+    description: "Security architecture and senior system design interview playbook",
+    chapters: [9, 10],
+  },
+];
 
-// ─── Helper: read chapter markdown ─────────────────────────────────────────
-
-function readChapter(filePath) {
-  const fullPath = join(BOOK_DIR, filePath);
-  return readFileSync(fullPath, "utf-8");
+// chapter number → part (for part divider injection)
+const CHAPTER_TO_PART = {};
+for (const part of PARTS) {
+  for (const ch of part.chapters) CHAPTER_TO_PART[ch] = part;
 }
 
-// ─── Helper: convert markdown to HTML chapter block ─────────────────────────
+// ─── Paths ────────────────────────────────────────────────────────────────────
 
-function mdToChapterHtml(markdown, chapterIndex) {
-  // Strip footer navigation lines (last 2–3 lines with [← ... | TOC | ...→] pattern)
-  const lines = markdown.split("\n");
-  const filtered = [];
-  for (const line of lines) {
-    // Skip navigation links and source lines at the end
-    if (/^\[← /.test(line) || /^\*Source: /.test(line) || /^\[Table of Contents\]/.test(line)) continue;
-    filtered.push(line);
-  }
+const CSS_PATH         = join(BOOK_DIR, "styles", "book.css");
+const DIAGRAMS_DIR     = join(BOOK_DIR, "assets", "diagrams");
+const COVER_IMAGE_PATH = join(BOOK_DIR, "assets", "cover", "senior-frontend-system-design-cover.png");
 
-  // Remove trailing empty lines
-  while (filtered.length > 0 && filtered[filtered.length - 1].trim() === "") {
-    filtered.pop();
-  }
+// ─── Configure marked ─────────────────────────────────────────────────────────
 
-  const cleanedMarkdown = filtered.join("\n");
-  const html = marked.parse(cleanedMarkdown);
+marked.setOptions({ gfm: true, breaks: false });
 
-  // Rewrite ../assets/diagrams/*.svg paths to absolute file:// URLs.
-  // Chapters live in book/chapters/, so ../assets/diagrams/ → book/assets/diagrams/.
-  // Using absolute file:// URLs ensures Puppeteer resolves them regardless of
-  // where the intermediate HTML file sits.
-  const DIAGRAMS_DIR = join(BOOK_DIR, "assets", "diagrams");
-  const rewrittenHtml = html.replace(
-    /src="\.\.\/assets\/diagrams\/([^"]+\.svg)"/g,
-    (_, filename) => {
-      const absPath = join(DIAGRAMS_DIR, filename);
-      return `src="${pathToFileURL(absPath).href}"`;
-    }
-  );
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-  return `<div class="chapter" id="chapter-${chapterIndex}">\n${rewrittenHtml}\n</div>\n`;
+function readFile(path) {
+  return readFileSync(path, "utf-8");
 }
 
-// ─── Build cover HTML ───────────────────────────────────────────────────────
-
-function buildCoverHtml() {
-  const template = readFileSync(join(BOOK_DIR, "templates", "cover.html"), "utf-8");
-
-  return template
-    .replace(/{{TITLE}}/g, metadata.title)
-    .replace(/{{SUBTITLE}}/g, metadata.subtitle)
-    .replace(/{{AUTHOR}}/g, metadata.author)
-    .replace(/{{BLOG_URL}}/g, metadata.blogUrl)
-    .replace(/{{VERSION}}/g, metadata.version)
-    .replace(/{{PUBLICATION_DATE}}/g, metadata.publicationDate)
-    .replace(/{{LICENSE}}/g, metadata.license)
-    .replace(/{{CSS_PATH}}/g, "");
+function cssUrl() {
+  return readFile(CSS_PATH);
 }
 
-// ─── Build full book HTML ───────────────────────────────────────────────────
-
-function buildBookHtml(chaptersHtml) {
-  const template = readFileSync(join(BOOK_DIR, "templates", "book.html"), "utf-8");
-
-  const fullContent = chaptersHtml.join("\n<hr class='chapter-break' />\n");
-
-  return template
-    .replace(/{{TITLE}}/g, metadata.title)
-    .replace(/{{SUBTITLE}}/g, metadata.subtitle)
-    .replace(/{{CSS_PATH}}/g, "")
-    .replace(/{{CONTENT}}/g, fullContent);
-}
-
-// ─── Inline CSS into HTML ───────────────────────────────────────────────────
-
-function inlineCss(html) {
+function rewriteSvgPaths(html) {
   return html.replace(
-    /<link rel="stylesheet" href=""[^/]*\/>/,
-    `<style>\n${cssContent}\n</style>`
+    /src="\.\.\/assets\/diagrams\/([^"]+\.svg)"/g,
+    (_, filename) => `src="${pathToFileURL(join(DIAGRAMS_DIR, filename)).href}"`
   );
 }
 
-// ─── Main build ─────────────────────────────────────────────────────────────
+function filterNavLines(lines) {
+  return lines.filter(
+    (line) =>
+      !/^\[← /.test(line) &&
+      !/^\*Source: /.test(line) &&
+      !/^\[Table of Contents\]/.test(line)
+  );
+}
+
+function trimTrailingBlankLines(lines) {
+  while (lines.length > 0 && lines[lines.length - 1].trim() === "") lines.pop();
+  return lines;
+}
+
+function mdToHtml(markdown) {
+  const html = marked.parse(markdown);
+  return rewriteSvgPaths(html);
+}
+
+function htmlDoc(css, body) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${metadata.title}</title>
+  <style>${css}</style>
+</head>
+<body>${body}</body>
+</html>`;
+}
+
+// ─── Parse chapter markdown ───────────────────────────────────────────────────
+
+function parseChapter(filePath, chapterNum) {
+  const raw = readFile(join(BOOK_DIR, filePath));
+  const lines = raw.split("\n");
+
+  // Extract title from first # heading
+  let title = "";
+  let shortTitle = "";
+  let titleLineIndex = -1;
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].startsWith("# ")) {
+      title = lines[i].replace(/^#\s+/, "").trim();
+      shortTitle = title.replace(/^Chapter\s+\d+:\s*/i, "").trim();
+      titleLineIndex = i;
+      break;
+    }
+  }
+
+  // Extract subtitle from **Chapter objective:** line
+  let subtitle = "";
+  for (const line of lines) {
+    const m = line.match(/^\*\*Chapter objective:\*\*\s*(.+)/);
+    if (m) {
+      subtitle = m[1].trim();
+      break;
+    }
+  }
+
+  // Body: everything after the h1, navigation stripped, trailing blanks removed
+  const bodyLines = titleLineIndex >= 0 ? lines.slice(titleLineIndex + 1) : lines;
+  const cleaned = trimTrailingBlankLines(filterNavLines(bodyLines));
+  const bodyHtml = mdToHtml(cleaned.join("\n"));
+
+  return { number: chapterNum, title, shortTitle, subtitle, bodyHtml };
+}
+
+// ─── Page builders ────────────────────────────────────────────────────────────
+
+function coverImageHtml() {
+  if (existsSync(COVER_IMAGE_PATH)) {
+    const coverUrl = pathToFileURL(COVER_IMAGE_PATH).href;
+    return `
+<div class="cover-page cover-page--image">
+  <img src="${coverUrl}" alt="${metadata.title}" class="cover-full-image" />
+</div>`;
+  }
+
+  // Auto-generated styled cover
+  return `
+<div class="cover-page cover-page--html">
+  <div class="cover-inner">
+    <p class="cover-eyebrow">Senior Frontend System Design</p>
+    <h1 class="cover-title">${metadata.title}</h1>
+    <p class="cover-subtitle">${metadata.subtitle}</p>
+    <hr class="cover-rule" />
+    <p class="cover-author">${metadata.author}</p>
+    <p class="cover-meta">${metadata.authorTitle}</p>
+    <p class="cover-meta">${metadata.blogUrl}</p>
+    <div class="cover-footer-meta">
+      <span>Version ${metadata.version}</span>
+      <span class="cover-meta-sep">·</span>
+      <span>${metadata.publicationDate}</span>
+      <span class="cover-meta-sep">·</span>
+      <span>${metadata.license}</span>
+    </div>
+  </div>
+</div>`;
+}
+
+function copyrightHtml() {
+  return `
+<div class="copyright-page">
+  <div class="copyright-content">
+    <p class="copyright-book-title">${metadata.title}</p>
+    <p class="copyright-subtitle">${metadata.subtitle}</p>
+
+    <p>Copyright &copy; ${new Date(metadata.publicationDate).getFullYear()} ${metadata.author}</p>
+    <p>All rights reserved.</p>
+
+    <p>This work is licensed under the
+       <strong>Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International</strong>
+       (CC&nbsp;BY-NC-ND&nbsp;4.0) License.</p>
+    <p>You are free to share this work with attribution for non-commercial purposes.
+       You may not distribute modified versions or use it for commercial purposes
+       without prior written permission.</p>
+
+    <p>Published: ${metadata.publicationDate}</p>
+    <p>Version: ${metadata.version}</p>
+
+    <p>Author: <a href="${metadata.authorUrl}">${metadata.authorUrl}</a></p>
+    <p>Blog: <a href="${metadata.blogUrl}">${metadata.blogUrl}</a></p>
+    <p>Source series: <a href="${metadata.sourceSeriesUrl}">${metadata.sourceSeriesUrl}</a></p>
+  </div>
+</div>`;
+}
+
+function tocHtml(chapters) {
+  // Build chapter entries grouped by part
+  const mainChapters = chapters.filter((ch) => ch.number >= 1 && ch.number <= 10);
+
+  let partRows = "";
+  for (const part of PARTS) {
+    partRows += `
+      <div class="toc-part">
+        <div class="toc-part-label">Part ${part.number} &mdash; ${part.title}</div>`;
+    for (const chNum of part.chapters) {
+      const ch = mainChapters.find((c) => c.number === chNum);
+      if (ch) {
+        partRows += `
+        <div class="toc-chapter">
+          <span class="toc-chapter-num">Chapter ${ch.number}</span>
+          <span class="toc-chapter-dot">&middot;</span>
+          <span class="toc-chapter-name">${ch.shortTitle}</span>
+        </div>`;
+      }
+    }
+    partRows += `\n      </div>`;
+  }
+
+  return `
+<div class="toc-page">
+  <h1 class="toc-heading">Contents</h1>
+  <nav class="toc">
+    <div class="toc-item toc-item--front">Preface</div>
+    ${partRows}
+    <div class="toc-divider"></div>
+    <div class="toc-item toc-item--back">Closing Note</div>
+    <div class="toc-item toc-item--back">About the Author</div>
+  </nav>
+</div>`;
+}
+
+function prefaceHtml(chapter) {
+  return `
+<div class="front-matter-page chapter-content" id="preface">
+  <h1 class="front-matter-heading">Preface</h1>
+  ${chapter.bodyHtml}
+</div>`;
+}
+
+function partDividerHtml(part) {
+  // Simple bullet list of chapter titles for this part
+  const chapterList = part.chapters
+    .map((n) => `<li>Chapter ${n}</li>`)
+    .join("\n        ");
+
+  return `
+<div class="part-divider-page" id="part-${part.number}">
+  <div class="part-divider-content">
+    <div class="part-divider-eyebrow">Part ${part.number}</div>
+    <div class="part-divider-title">${part.title}</div>
+    <div class="part-divider-rule"></div>
+    <div class="part-divider-desc">${part.description}</div>
+    <ul class="part-divider-chapters">
+      ${chapterList}
+    </ul>
+  </div>
+</div>`;
+}
+
+function chapterTitlePageHtml(chapter) {
+  return `
+<div class="chapter-title-page" id="chapter-${chapter.number}-title">
+  <div class="chapter-title-content">
+    <div class="chapter-title-eyebrow">Chapter ${chapter.number}</div>
+    <div class="chapter-title-rule"></div>
+    <h1 class="chapter-title-heading">${chapter.shortTitle}</h1>
+    ${chapter.subtitle ? `<p class="chapter-title-subtitle">${chapter.subtitle}</p>` : ""}
+  </div>
+</div>`;
+}
+
+function chapterContentHtml(chapter) {
+  return `
+<div class="chapter-content" id="chapter-${chapter.number}">
+  ${chapter.bodyHtml}
+</div>`;
+}
+
+function closingNoteHtml(chapter) {
+  return `
+<div class="chapter-content closing-note-page" id="closing-note">
+  <h1 class="front-matter-heading">Closing Note</h1>
+  ${chapter.bodyHtml}
+</div>`;
+}
+
+function aboutAuthorHtml(chapter) {
+  // Check for author image
+  const authorImagePaths = [
+    join(BOOK_DIR, "assets", "author", "ranveer-kumar-author.png"),
+    join(BOOK_DIR, "assets", "author", "ranveer-kumar-author.webp"),
+  ];
+  const authorImagePath = authorImagePaths.find((p) => existsSync(p));
+  const authorImageHtml = authorImagePath
+    ? `<img src="${pathToFileURL(authorImagePath).href}" alt="${metadata.author}" class="author-photo" />`
+    : "";
+
+  // Strip the leading "## Ranveer Kumar" h2 — it's already shown in the header above
+  const bodyHtml = chapter.bodyHtml.replace(/^\s*<h2>[^<]*<\/h2>\s*/, "");
+
+  return `
+<div class="about-author-page" id="about-author">
+  <div class="about-author-header">
+    ${authorImageHtml}
+    <div class="about-author-title-block">
+      <div class="about-author-eyebrow">About the Author</div>
+      <h1 class="about-author-name">${metadata.author}</h1>
+      <p class="about-author-role">${metadata.authorTitle}</p>
+    </div>
+  </div>
+  ${bodyHtml}
+</div>`;
+}
+
+// ─── Build body HTML ──────────────────────────────────────────────────────────
+
+function buildBodyHtml(parsedChapters) {
+  const css = cssUrl();
+
+  // Separate chapters by role
+  const preface       = parsedChapters.find((c) => c.number === 0);
+  const mainChapters  = parsedChapters.filter((c) => c.number >= 1 && c.number <= 10);
+  const closingNote   = parsedChapters.find((c) => c.number === 11);
+  const aboutAuthor   = parsedChapters.find((c) => c.number === 12);
+
+  const sections = [];
+
+  // Copyright page
+  sections.push(copyrightHtml());
+
+  // TOC
+  sections.push(tocHtml(mainChapters));
+
+  // Preface (front matter — no chapter title page)
+  if (preface) sections.push(prefaceHtml(preface));
+
+  // Parts + chapters
+  let lastPartNum = null;
+  for (const chapter of mainChapters) {
+    const part = CHAPTER_TO_PART[chapter.number];
+    if (part && part.number !== lastPartNum) {
+      sections.push(partDividerHtml(part));
+      lastPartNum = part.number;
+    }
+    sections.push(chapterTitlePageHtml(chapter));
+    sections.push(chapterContentHtml(chapter));
+  }
+
+  // Closing note
+  if (closingNote) sections.push(closingNoteHtml(closingNote));
+
+  // About the Author (dedicated page)
+  if (aboutAuthor) sections.push(aboutAuthorHtml(aboutAuthor));
+
+  return htmlDoc(css, sections.join("\n"));
+}
+
+// ─── PDF rendering helpers ────────────────────────────────────────────────────
+
+async function renderHtmlToPdf(browser, htmlPath, pdfPath, options = {}) {
+  const page = await browser.newPage();
+  await page.goto(pathToFileURL(htmlPath).href, { waitUntil: "networkidle0" });
+  await page.pdf({ path: pdfPath, format: "A4", printBackground: true, ...options });
+  await page.close();
+}
+
+// ─── Main build ───────────────────────────────────────────────────────────────
 
 async function buildPdf() {
   console.log("\n[book:pdf] Building Senior Frontend System Design Handbook PDF...\n");
 
   mkdirSync(OUTPUT_DIR, { recursive: true });
+  const css = cssUrl();
 
-  // Build chapter HTML blocks
-  const chaptersHtml = metadata.chapters.map((chapter, index) => {
-    console.log(`  [${String(index + 1).padStart(2, "0")}] ${chapter.title}`);
-    const markdown = readChapter(chapter.file);
-    return mdToChapterHtml(markdown, index);
-  });
+  // ── Parse all chapters ───────────────────────────────────────────────────
+  const parsedChapters = [];
+  for (const [index, chapter] of metadata.chapters.entries()) {
+    // Determine chapter number from file name (00 = preface, 01–10 = chapters, 11 = closing, 12 = author)
+    const fileNum = parseInt(chapter.file.match(/^chapters\/(\d+)/)?.[1] ?? "0", 10);
+    console.log(`  [${String(fileNum).padStart(2, "0")}] Parsing: ${chapter.title}`);
+    parsedChapters.push(parseChapter(chapter.file, fileNum));
+  }
 
-  // Build full HTML
-  const coverHtml = buildCoverHtml();
-  const bodyHtml = buildBookHtml(chaptersHtml);
+  // ── Generate cover HTML ─────────────────────────────────────────────────
+  const coverHtmlContent = htmlDoc(css, coverImageHtml());
+  const coverHtmlPath    = join(OUTPUT_DIR, "_cover.html");
+  const coverPdfPath     = join(OUTPUT_DIR, "_cover.pdf");
 
-  // Combine: cover page + chapters
-  const fullHtml = inlineCss(coverHtml) + "\n" + inlineCss(bodyHtml);
+  writeFileSync(coverHtmlPath, coverHtmlContent, "utf-8");
 
-  // Write intermediate HTML to disk — Puppeteer will load it via file:// URL
-  // so that local SVG assets resolve correctly (page.setContent blocks file:// access)
-  const htmlOutputPath = join(OUTPUT_DIR, "senior-frontend-system-design-handbook.html");
-  writeFileSync(htmlOutputPath, fullHtml, "utf-8");
-  console.log(`\n  HTML written: ${htmlOutputPath}`);
+  // ── Generate body HTML ──────────────────────────────────────────────────
+  const bodyHtmlContent  = buildBodyHtml(parsedChapters);
+  const bodyHtmlPath     = join(OUTPUT_DIR, "_body.html");
+  const bodyPdfPath      = join(OUTPUT_DIR, "_body.pdf");
 
-  // Launch Puppeteer and render to PDF
-  console.log("\n  Launching headless browser...");
+  writeFileSync(bodyHtmlPath, bodyHtmlContent, "utf-8");
+
+  console.log(`\n  HTML files written.`);
+
+  // ── Launch Puppeteer ────────────────────────────────────────────────────
+  console.log("  Launching headless browser...");
 
   const browser = await puppeteer.launch({
     headless: true,
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--allow-file-access-from-files",
-    ],
+    args: ["--no-sandbox", "--disable-setuid-sandbox", "--allow-file-access-from-files"],
   });
 
-  const page = await browser.newPage();
-
-  // Load via file:// URL so relative and absolute local SVG paths resolve
-  const htmlFileUrl = pathToFileURL(htmlOutputPath).href;
-  await page.goto(htmlFileUrl, {
-    waitUntil: "networkidle0",
+  // ── Pass 1: Cover PDF (no margins, no header/footer) ───────────────────
+  console.log("  Rendering cover PDF...");
+  await renderHtmlToPdf(browser, coverHtmlPath, coverPdfPath, {
+    margin: { top: "0", right: "0", bottom: "0", left: "0" },
+    displayHeaderFooter: false,
   });
 
-  const pdfOutputPath = join(OUTPUT_DIR, "senior-frontend-system-design-handbook.pdf");
-
-  await page.pdf({
-    path: pdfOutputPath,
-    format: "A4",
-    printBackground: true,
-    margin: {
-      top: "2cm",
-      right: "2.2cm",
-      bottom: "2.4cm",
-      left: "2.2cm",
-    },
+  // ── Pass 2: Body PDF (standard margins, page numbers in footer) ─────────
+  console.log("  Rendering body PDF...");
+  await renderHtmlToPdf(browser, bodyHtmlPath, bodyPdfPath, {
+    margin: { top: "2cm", right: "2.2cm", bottom: "2.4cm", left: "2.2cm" },
     displayHeaderFooter: true,
     headerTemplate: "<div></div>",
     footerTemplate: `
-      <div style="width: 100%; text-align: center; font-size: 9pt;
-                  color: #68645e; font-family: Inter, sans-serif;
-                  padding-bottom: 0.5cm;">
+      <div style="width:100%;text-align:center;font-size:8.5pt;
+                  color:#9a9589;font-family:Inter,sans-serif;
+                  padding-bottom:0.4cm;">
         <span class="pageNumber"></span>
-      </div>
-    `,
+      </div>`,
   });
 
   await browser.close();
 
-  console.log(`  PDF written:  ${pdfOutputPath}`);
+  // ── Merge: cover + body ─────────────────────────────────────────────────
+  console.log("  Merging cover and body PDFs...");
+
+  const coverBytes  = readFileSync(coverPdfPath);
+  const bodyBytes   = readFileSync(bodyPdfPath);
+
+  const coverPdf = await PDFDocument.load(coverBytes);
+  const bodyPdf  = await PDFDocument.load(bodyBytes);
+
+  const finalPdf = await PDFDocument.create();
+
+  // Copy cover pages (should be exactly 1)
+  const [coverPage] = await finalPdf.copyPages(coverPdf, [0]);
+  finalPdf.addPage(coverPage);
+
+  // Copy all body pages
+  const bodyPageIndices = Array.from({ length: bodyPdf.getPageCount() }, (_, i) => i);
+  const bodyPages = await finalPdf.copyPages(bodyPdf, bodyPageIndices);
+  for (const page of bodyPages) finalPdf.addPage(page);
+
+  // Set PDF metadata
+  finalPdf.setTitle(metadata.title);
+  finalPdf.setAuthor(metadata.author);
+  finalPdf.setSubject(metadata.description);
+  finalPdf.setKeywords(["frontend", "system design", "architecture", "senior", "handbook"]);
+  finalPdf.setCreationDate(new Date(metadata.publicationDate));
+  finalPdf.setModificationDate(new Date());
+
+  const finalPdfBytes = await finalPdf.save();
+  const finalPdfPath  = join(OUTPUT_DIR, "senior-frontend-system-design-handbook.pdf");
+  writeFileSync(finalPdfPath, finalPdfBytes);
+
+  // Also copy the body HTML to the main output location for reference
+  writeFileSync(
+    join(OUTPUT_DIR, "senior-frontend-system-design-handbook.html"),
+    bodyHtmlContent,
+    "utf-8"
+  );
+
+  // ── Cleanup temp files ──────────────────────────────────────────────────
+  for (const p of [coverHtmlPath, coverPdfPath, bodyHtmlPath, bodyPdfPath]) {
+    try { unlinkSync(p); } catch { /* ignore */ }
+  }
+
+  console.log(`\n  PDF written: ${finalPdfPath}`);
   console.log(`\n[book:pdf] Done.\n`);
 }
 
 buildPdf().catch((err) => {
   console.error("\n[book:pdf] Build failed:", err.message);
+  console.error(err.stack);
   process.exit(1);
 });
